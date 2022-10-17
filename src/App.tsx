@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import {Tasks} from "./Tasks";
+import {Todolist} from "./Todolist";
 
 
 export type DataType = {
@@ -14,6 +15,8 @@ export type tasksType = {
     title: string
     isDone: boolean
 }
+
+export type FilterValueType = "All" | "Active" | "Completed"
 
 function App() {
     const data1 = {
@@ -130,8 +133,24 @@ function App() {
         ]
     }
 
+    let [tasks, setTasks] = useState([
+        {id: 1, title: "123", isDone: true},
+        {id: 2, title: "123", isDone: false},
+        {id: 3, title: "123", isDone: false},
+        {id: 4, title: "123", isDone: true}
+    ])
+
+    const removeTask = (taskID: number) => {
+        setTasks(tasks.filter(el => el.id !== taskID))
+    }
+
     return (
         <div className="App">
+            <Todolist tasks={tasks}
+                      title={" What to learn"}
+                      removeTask={removeTask}
+                // filteredTasks={filteredTasks}
+            />
             <Tasks data={data1}/>
             <Tasks data={data2}/>
         </div>
