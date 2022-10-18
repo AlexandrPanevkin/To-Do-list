@@ -6,6 +6,7 @@ type TodolistPropsType = {
     tasks: Array<TaskType>
     removeTask: (taskID: number) => void
     // filteredTasks: (filterValue: FilterValueType) => void
+    removeAllTasks: () => void
 }
 
 type TaskType = {
@@ -25,6 +26,8 @@ export const Todolist = (props: TodolistPropsType) => {
         afterFilterTasks = props.tasks.filter(el => el.isDone)
     } else if (filterValue === "Completed") {
         afterFilterTasks = props.tasks.filter(el => !el.isDone)
+    } else if (filterValue === "three") {
+        afterFilterTasks = props.tasks.filter(el => el.id < 4)
     }
     return (
         <div className="App">
@@ -60,6 +63,18 @@ export const Todolist = (props: TodolistPropsType) => {
                         filteredTasks("Completed")
                     }}>Completed
                     </button>
+                </div>
+                <div>
+                    <button onClick={props.removeAllTasks}>
+                        DELETE ALL TASKS
+                    </button>
+                    <div>
+                        <button onClick={() => {
+                            filteredTasks("three")
+                        }}>
+                            First three tasks
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

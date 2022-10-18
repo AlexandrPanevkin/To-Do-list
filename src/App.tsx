@@ -16,7 +16,7 @@ export type tasksType = {
     isDone: boolean
 }
 
-export type FilterValueType = "All" | "Active" | "Completed"
+export type FilterValueType = "All" | "Active" | "Completed" | "three"
 
 function App() {
     const data1 = {
@@ -144,12 +144,16 @@ function App() {
         setTasks(tasks.filter(el => el.id !== taskID))
     }
 
+    const removeAllTasks = () => {
+        setTasks([])
+    }
+
     return (
         <div className="App">
             <Todolist tasks={tasks}
                       title={" What to learn"}
                       removeTask={removeTask}
-                // filteredTasks={filteredTasks}
+                      removeAllTasks={removeAllTasks}
             />
             <Tasks data={data1}/>
             <Tasks data={data2}/>
