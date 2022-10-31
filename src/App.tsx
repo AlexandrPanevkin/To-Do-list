@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import './App.css';
 import {Todolist} from './Todolist';
-import {v1} from "uuid";
+import {v1} from 'uuid';
 
 export type FilterValuesType = "all" | "active" | "completed";
 
@@ -15,14 +15,15 @@ function App() {
         {id: v1(), title: "GraphQL", isDone: false},
     ]);
 
-    const addTask = (newTitle: string) => {
-        const newTask = {id: v1(), title: newTitle, isDone: true};
-        setTasks([newTask, ...tasks])
-    }
-
     function removeTask(id: string) {
         let filteredTasks = tasks.filter(t => t.id != id);
         setTasks(filteredTasks);
+    }
+
+    function addTask(title: string) {
+        let task = {id: v1(), title: title, isDone: false};
+        let newTasks = [task, ...tasks];
+        setTasks(newTasks);
     }
 
     let [filter, setFilter] = useState<FilterValuesType>("all");
@@ -40,6 +41,16 @@ function App() {
         setFilter(value);
     }
 
+    const changeCheckBox = (taskId: string, eventValue: boolean) => {
+        // const newTask=tasks.map(t=>{
+        //     return t.id===taskId ? {...t, isDone: !t.isDone}}
+        //
+        // )
+        // setTasks(newTask)
+        // console.log('asda')
+        setTasks(tasks.map(el => el.id === taskId ? {...el, isDone: eventValue} : el))
+    }
+
     return (
         <div className="App">
             <Todolist title="What to learn"
@@ -47,6 +58,7 @@ function App() {
                       removeTask={removeTask}
                       changeFilter={changeFilter}
                       addTask={addTask}
+                      changeCheckBox={changeCheckBox}
             />
         </div>
     );
