@@ -41,22 +41,28 @@ function App() {
         ]
     })
 
-    function removeTask(id: string) {
+    function removeTask(todoListsID: string, TaskId: string) {
         // let filteredTasks = tasks.filter(t => t.id != id);
         // setTasks(filteredTasks);
+        setTasks({...tasks, [todoListsID]: tasks [todoListsID].filter(el => el.id !== TaskId)})
     }
 
-    function addTask(title: string) {
-        // let task = {id: v1(), title: title, isDone: false};
+    function addTask(todoListsID: string, title: string) {
+        let task = {id: v1(), title: title, isDone: false};
         // let newTasks = [task, ...tasks];
         // setTasks(newTasks);
+        setTasks({...tasks, [todoListsID]: [task, ...tasks [todoListsID]]})
     }
 
-    function changeStatus(taskId: string, isDone: boolean) {
+    function changeStatus(todoListsID: string, taskId: string, isDone: boolean) {
         // let task = tasks.find(t => t.id === taskId);
         // if (task) {
         //     task.isDone = isDone;
         // setTasks([...tasks]);
+        setTasks({
+            ...tasks,
+            [todoListsID]: tasks[todoListsID].map(el => el.id === taskId ? {...el, isDone: isDone} : el)
+        })
     }
 
 
