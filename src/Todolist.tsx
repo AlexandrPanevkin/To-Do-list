@@ -1,6 +1,7 @@
 import React, {ChangeEvent, useState, KeyboardEvent} from 'react';
 import {FilterValuesType} from './App';
 import {Input} from "./Components/Input";
+import {EditableSpan} from "./Components/EditableSpan";
 
 export type TaskType = {
     id: string
@@ -18,6 +19,8 @@ type PropsType = {
     changeTaskStatus: (id: string, isDone: boolean, todolistId: string) => void
     removeTodolist: (id: string) => void
     filter: FilterValuesType
+    updateTask: (todolistId: string, taskId: string, updateTitle: string) => void
+    updateTodolist: (todolistId: string, updateTitle: string) => void
 }
 
 export function Todolist(props: PropsType) {
@@ -31,8 +34,13 @@ export function Todolist(props: PropsType) {
     const addTaskHandler = (newTitle: string) => {
         props.addTask(newTitle, props.id)
     }
+    const updateTodolistHandler = (updateTitle: string) => {
+        props.updateTodolist(props.id, updateTitle)
+    }
+
     return <div>
-        <h3> {props.title}
+        <h3>
+            <EditableSpan callBack={updateTodolistHandler} title={props.title}/>
             <button onClick={removeTodolist}>x</button>
         </h3>
         <Input callBack={addTaskHandler}
@@ -45,10 +53,13 @@ export function Todolist(props: PropsType) {
                         let newIsDoneValue = e.currentTarget.checked;
                         props.changeTaskStatus(t.id, newIsDoneValue, props.id);
                     }
-
+                    const updateTaskHandler = (updateTitle: string) => {
+                        props.updateTask(props.id, t.id, updateTitle)
+                    }
                     return <li key={t.id} className={t.isDone ? "is-done" : ""}>
                         <input type="checkbox" onChange={onChangeHandler} checked={t.isDone}/>
-                        <span>{t.title}</span>
+                        {/*<span>{t.title}</span>*/}
+                        <EditableSpan callBack={updateTaskHandler} title={t.title}/>
                         <button onClick={onClickHandler}>x</button>
                     </li>
                 })
