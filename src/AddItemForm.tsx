@@ -1,42 +1,41 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 
-type AddItemFormType = {
+type PropsType = {
     addItem: (title: string) => void
 }
 
-export const AddItemForm = (props: AddItemFormType) => {
+export const AddItemForm = (props: PropsType) => {
+    let [title, setTitle] = useState("")
+    let [error, setError] = useState<string | null>(null)
 
-    const [title, setTitle] = useState('')
-    const [error, setError] = useState<string | null>(null)
-
-    const onAddTaskClickHandler = () => {
-        if (title.trim() !== '') {
-            props.addItem(title.trim())
-            setTitle('')
+    const addItem = () => {
+        if (title.trim() !== "") {
+            props.addItem(title.trim());
+            setTitle("");
         } else {
-            setError('Title is required')
+            setError("Title is required");
         }
     }
+
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setError(null)
         setTitle(e.currentTarget.value)
     }
 
-    const onKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') {
-            onAddTaskClickHandler()
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        setError(null);
+        if (e.charCode === 13) {
+            addItem();
         }
     }
     return (
         <div>
-            <input
-                value={title}
-                onChange={onChangeHandler}
-                onKeyDown={onKeyDownHandler}
-                className={error ? 'error' : ''}
+            <input value={title}
+                   onChange={onChangeHandler}
+                   onKeyPress={onKeyPressHandler}
+                   className={error ? "error" : ""}
             />
-            <button onClick={onAddTaskClickHandler}>+</button>
-            {error && <div className={'errorMessage'}>{error}</div>}
+            <button onClick={addItem}>+</button>
+            {error && <div className="error-message">{error}</div>}
         </div>
     );
 };
