@@ -1,5 +1,4 @@
 import React, {ChangeEvent} from 'react';
-import {Simulate} from "react-dom/test-utils";
 
 type onChangeHandlerType = {
     checked: boolean
