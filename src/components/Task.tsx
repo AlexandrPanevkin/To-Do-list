@@ -5,7 +5,7 @@ import {Delete} from "@mui/icons-material";
 import {SuperCheckBox} from "./SuperCheckBox";
 
 type PropsType = {
-    taskId: string //+
+    taskId: string
     taskTitle: string
     isChecked: boolean
     removeTask: (taskId: string) => void
