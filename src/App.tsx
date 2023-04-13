@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import {AddItemForm} from './components/AddItemForm';
 import AppBar from '@mui/material/AppBar/AppBar';
@@ -9,12 +9,12 @@ import {
     changeFilterAC,
     changeTodolistTitleAC,
     FilterValuesType,
-    removeTodolistAC, TodolistDomainType,
+    removeTodolistAC, setTodolistsAC, TodolistDomainType,
 } from "./state/todolists-reducer";
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
-import {TaskStatuses, TaskType} from './api/todolist-api';
+import {TaskStatuses, TaskType, todolistApi} from './api/todolist-api';
 import {Todolist} from "./components/Todolist";
 
 export type TasksStateType = {
@@ -61,6 +61,13 @@ function App() {
         let action = addTodolistAC(title)
         dispatch(action)
     }, [dispatch])
+
+    useEffect(() => {
+        todolistApi.getTodolists()
+            .then(res => {
+                dispatch(setTodolistsAC(res.data))
+            })
+    }, [])
 
     return (
         <div className="App">
