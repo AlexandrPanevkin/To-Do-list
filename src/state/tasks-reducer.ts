@@ -1,6 +1,6 @@
 import {TasksStateType} from "../App";
 import {v1} from "uuid";
-import {addTodolistAC, removeTodolistACType, setTodolistsACType} from "./todolists-reducer";
+import {addTodolistAC, removeTodolistACType, getTodolistsACType} from "./todolists-reducer";
 import {TaskPriorities, TaskStatuses} from "../api/todolist-api";
 
 export type tasksReducerType =
@@ -8,7 +8,7 @@ export type tasksReducerType =
     | addTaskACType
     | changeTaskStatusACType
     | changeTaskTitleACType
-    | addTodolistAC | removeTodolistACType | setTodolistsACType
+    | addTodolistAC | removeTodolistACType | getTodolistsACType
 
 const initialState: TasksStateType = {}
 
