@@ -27,7 +27,7 @@ function App() {
 
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
 
-    const dispatch = useAppDispatch
+    const dispatch = useAppDispatch()
 
     const removeTask = useCallback((id: string, todolistId: string) => {
         dispatch(removeTaskAC(id, todolistId))
