@@ -1,8 +1,9 @@
 import {TasksStateType} from "../App";
 import {v1} from "uuid";
 import {addTodolistAC, removeTodolistACType, getTodolistsACType} from "./todolists-reducer";
-import {TaskPriorities, TaskStatuses, TaskType, todolistApi} from "../api/todolist-api";
+import {TaskPriorities, TaskStatuses, TaskType, todolistApi, UpdateTaskModelType} from "../api/todolist-api";
 import {Dispatch} from "redux";
+import {AppRootStateType} from "./store";
 
 export type tasksReducerType =
     removeTaskACType
@@ -108,4 +109,23 @@ export const addTasksThunkTC = (todolistId: string, title: string) => (dispatch:
         .then(res => {
             dispatch(addTaskAC(res.data.data.item, todolistId))
         })
+}
+
+export const updateTaskStatusThunkTC = (id: string, status: TaskStatuses, todolistId: string) => (dispatch: Dispatch, getState: () => AppRootStateType) => {
+    const task = getState().tasks[todolistId].find(el => el.id === id)
+    if (task) {
+        const model: UpdateTaskModelType = {
+            title: task.title,
+            status,
+            deadline: task.deadline,
+            description: task.description,
+            priority: task.priority,
+            startDate: task.startDate
+        }
+        todolistApi.updateTask(todolistId, id, model)
+            .then(res => {
+                dispatch(changeTaskStatusAC(id, status, todolistId))
+            })
+    }
+
 }
