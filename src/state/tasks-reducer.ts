@@ -1,5 +1,5 @@
 import {TasksStateType} from "../App";
-import {addTodolistAC, removeTodolistACType, getTodolistsACType} from "./todolists-reducer";
+import {addTodolistAC, getTodolistsACType, removeTodolistAC} from "./todolists-reducer";
 import {TaskStatuses, TaskType, todolistApi, UpdateTaskModelType} from "../api/todolist-api";
 import {Dispatch} from "redux";
 import {AppRootStateType} from "./store";
@@ -10,7 +10,7 @@ export type tasksReducerType =
     | changeTaskStatusACType
     | changeTaskTitleACType
     | ReturnType<typeof addTodolistAC>
-    | removeTodolistACType
+    | ReturnType<typeof removeTodolistAC>
     | getTodolistsACType
     | setTasksACType
 
@@ -65,7 +65,7 @@ export const tasksReducer = (state = initialState, action: tasksReducerType) => 
             }
         case "REMOVE-TODOLIST":
             let copyState = {...state}
-            delete copyState[action.payload.todolistId]
+            delete copyState[action.todolistId]
             return copyState
         default:
             return state
