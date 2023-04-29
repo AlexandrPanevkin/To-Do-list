@@ -9,7 +9,7 @@ export type tasksReducerType =
     | addTaskACType
     | changeTaskStatusACType
     | changeTaskTitleACType
-    | addTodolistAC
+    | ReturnType<typeof addTodolistAC>
     | removeTodolistACType
     | getTodolistsACType
     | setTasksACType
