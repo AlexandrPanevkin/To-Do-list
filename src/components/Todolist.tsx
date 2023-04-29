@@ -39,9 +39,6 @@ export const Todolist = memo((props: PropsType) => {
     const addTask = useCallback((title: string) => {
         props.addTask(title, props.todolistId);
     }, [props.addTask, props.todolistId])
-    // const changeTaskStatus = useCallback((taskId: string, eventValue: boolean) => {
-    //     props.changeTaskStatus(taskId, eventValue, props.todolistId)
-    // }, [props.changeTaskStatus, props.todolistId])
 
     const changeTaskTitle = useCallback((taskId: string, newValue: string) => {
         props.changeTaskTitle(taskId, newValue, props.todolistId);

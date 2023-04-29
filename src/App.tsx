@@ -5,7 +5,7 @@ import AppBar from '@mui/material/AppBar/AppBar';
 import {Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@mui/icons-material";
 import {
-    addTodolistAC,
+    addTodolistAC, addTodolistTC,
     changeFilterAC,
     changeTodolistTitleAC,
     FilterValuesType, getTodolistsThunkTC,
@@ -64,8 +64,7 @@ function App() {
     }, [dispatch])
 
     const addTodolist = useCallback((title: string) => {
-        let action = addTodolistAC(title)
-        dispatch(action)
+        dispatch(addTodolistTC(title))
     }, [dispatch])
 
     useEffect(() => {
