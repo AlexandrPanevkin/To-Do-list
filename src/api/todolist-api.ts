@@ -43,7 +43,7 @@ export type TaskType = {
 }
 
 type GetTasksResponseType = {
-    Items: TaskType[]
+    items: TaskType[]
     totalCount: number
     error: string | null
 }

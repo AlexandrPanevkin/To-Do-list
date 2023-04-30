@@ -8,7 +8,7 @@ import {Task} from "./Task";
 import {FilterValuesType} from "../state/todolists-reducer";
 import {TaskStatuses, TaskType} from '../api/todolist-api';
 import {useAppDispatch} from "../state/store";
-import {getTasksThunkTC} from "../state/tasks-reducer";
+import {getTasksTC} from "../state/tasks-reducer";
 
 
 type PropsType = {
@@ -61,7 +61,7 @@ export const Todolist = memo((props: PropsType) => {
     }
 
     useEffect(() => {
-        dispatch(getTasksThunkTC(props.todolistId))
+        dispatch(getTasksTC(props.todolistId))
     }, [])
 
     return <div>
