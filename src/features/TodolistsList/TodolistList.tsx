@@ -1,9 +1,9 @@
 import React, {useCallback, useEffect} from 'react';
 import {Grid, Paper} from "@mui/material";
-import {AddItemForm} from "./AddItemForm";
-import {Todolist} from "./Todolist";
+import {AddItemForm} from "../../components/AddItemForm";
+import {Todolist} from "./Todolist/Todolist";
 import {useSelector} from "react-redux";
-import {AppRootStateType, useAppDispatch} from "../state/store";
+import {AppRootStateType, useAppDispatch} from "../../app/store";
 import {
     addTodolistTC,
     changeFilterAC,
@@ -11,9 +11,9 @@ import {
     removeTodolistTC,
     TodolistDomainType,
     updateTodolistTitleTC
-} from "../state/todolists-reducer";
-import {addTasksTC, removeTasksTC, updateTaskStatusTC, updateTaskTitleTC} from "../state/tasks-reducer";
-import {TaskStatuses, TaskType} from "../api/todolist-api";
+} from "./todolists-reducer";
+import {addTasksTC, removeTasksTC, updateTaskStatusTC, updateTaskTitleTC} from "./tasks-reducer";
+import {TaskStatuses, TaskType} from "../../api/todolist-api";
 
 export type TasksStateType = {
     [key: string]: Array<TaskType>
