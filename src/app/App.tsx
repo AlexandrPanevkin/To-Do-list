@@ -13,6 +13,7 @@ import {Menu} from "@mui/icons-material";
 import {useSelector} from "react-redux";
 import {AppRootStateType} from "./store";
 import {RequestStatusType} from "./app-reducer";
+import {ErrorSnackbar} from "../components/ErrorSnackbar";
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
             <Container fixed>
                 <TodolistList/>
             </Container>
+            <ErrorSnackbar/>
         </div>
     );
 }

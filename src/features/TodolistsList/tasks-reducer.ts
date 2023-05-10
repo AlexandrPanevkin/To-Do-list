@@ -3,6 +3,7 @@ import {Dispatch} from "redux";
 import {AppRootStateType} from "../../app/store";
 import {TasksStateType} from "./TodolistList";
 import {addTodolistACType, removeTodolistACType, setTodolistsACType} from "./todolists-reducer";
+import {setErrorAC, setRequestStatusAC, setRequestStatusACType} from "../../app/app-reducer";
 
 const initialState: TasksStateType = {}
 
@@ -91,9 +92,15 @@ export const removeTasksTC = (taskId: string, todolistId: string) => (dispatch: 
         })
 }
 export const addTasksTC = (todolistId: string, title: string) => (dispatch: Dispatch) => {
+    dispatch(setRequestStatusAC('loading'))
     todolistApi.createTask(todolistId, title)
         .then(res => {
-            dispatch(addTaskAC(res.data.data.item))
+            if (res.data.resultCode === 0) {
+                dispatch(addTaskAC(res.data.data.item))
+            } else {
+                dispatch(setErrorAC(res.data.messages[0]))
+            }
+            dispatch(setRequestStatusAC('idle'))
         })
 }
 export const updateTaskStatusTC = (id: string, status: TaskStatuses, todolistId: string) => (dispatch: Dispatch, getState: () => AppRootStateType) => {
@@ -141,3 +148,4 @@ export type tasksActionType =
     | removeTodolistACType
     | setTodolistsACType
     | ReturnType<typeof setTasksAC>
+    | setRequestStatusACType
