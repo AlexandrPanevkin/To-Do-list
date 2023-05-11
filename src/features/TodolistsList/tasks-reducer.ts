@@ -2,8 +2,9 @@ import {TaskStatuses, TaskType, todolistApi, UpdateTaskModelType} from "../../ap
 import {Dispatch} from "redux";
 import {AppRootStateType} from "../../app/store";
 import {TasksStateType} from "./TodolistList";
-import {addTodolistACType, removeTodolistACType, setTodolistsACType} from "./todolists-reducer";
+import {addTodolistACType, removeTodolistACType, setEntityStatusAC, setTodolistsACType} from "./todolists-reducer";
 import {setErrorAC, setRequestStatusAC, setRequestStatusACType} from "../../app/app-reducer";
+import {handleServerNetworkError} from "../../utils/error-utils";
 
 const initialState: TasksStateType = {}
 
@@ -98,9 +99,16 @@ export const addTasksTC = (todolistId: string, title: string) => (dispatch: Disp
             if (res.data.resultCode === 0) {
                 dispatch(addTaskAC(res.data.data.item))
             } else {
-                dispatch(setErrorAC(res.data.messages[0]))
+                if (res.data.messages.length) {
+                    dispatch(setErrorAC(res.data.messages[0]))
+                } else {
+                    dispatch(setErrorAC('Error'))
+                }
             }
             dispatch(setRequestStatusAC('idle'))
+        })
+        .catch((e) => {
+            handleServerNetworkError(dispatch, e.message)
         })
 }
 export const updateTaskStatusTC = (id: string, status: TaskStatuses, todolistId: string) => (dispatch: Dispatch, getState: () => AppRootStateType) => {
@@ -118,6 +126,9 @@ export const updateTaskStatusTC = (id: string, status: TaskStatuses, todolistId:
             .then(() => {
                 dispatch(changeTaskStatusAC(id, status, todolistId))
             })
+            .catch((e) => {
+                handleServerNetworkError(dispatch, e.message)
+            })
     }
 }
 export const updateTaskTitleTC = (id: string, newTitle: string, todolistId: string) => (dispatch: Dispatch, getState: () => AppRootStateType) => {
@@ -134,6 +145,9 @@ export const updateTaskTitleTC = (id: string, newTitle: string, todolistId: stri
         todolistApi.updateTask(todolistId, id, model)
             .then(() => {
                 dispatch(changeTaskTitleAC(id, newTitle, todolistId))
+            })
+            .catch((e) => {
+                handleServerNetworkError(dispatch, e.message)
             })
     }
 }
