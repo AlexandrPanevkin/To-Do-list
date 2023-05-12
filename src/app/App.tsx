@@ -10,15 +10,13 @@ import LinearProgress from "@mui/material/LinearProgress";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import {Menu} from "@mui/icons-material";
-import {useSelector} from "react-redux";
-import {AppRootStateType} from "./store";
-import {RequestStatusType} from "./app-reducer";
+import {useAppSelector} from "./store";
 import {ErrorSnackbar} from "../components/ErrorSnackbar";
 
 
 function App() {
 
-    const status = useSelector<AppRootStateType, RequestStatusType>((state) => state.app.status)
+    const status = useAppSelector((state) => state.app.status)
 
     return (
         <div className="App">

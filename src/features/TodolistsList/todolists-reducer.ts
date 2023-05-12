@@ -1,6 +1,13 @@
 import {todolistApi, TodolistType} from "../../api/todolist-api";
 import {Dispatch} from "redux";
-import {RequestStatusType, setErrorAC, setRequestStatusAC, setRequestStatusACType} from "../../app/app-reducer";
+import {
+    RequestStatusType,
+    setErrorAC,
+    setErrorACType,
+    setRequestStatusAC,
+    setRequestStatusACType
+} from "../../app/app-reducer";
+import {handleServerAppError} from "../../utils/error-utils";
 
 const initialState: TodolistDomainType[] = []
 
@@ -57,7 +64,7 @@ export const setEntityStatusAC = (todolistId: string, entityStatus: RequestStatu
 
 
 //thunks
-export const getTodolistsTC = () => (dispatch: Dispatch) => {
+export const getTodolistsTC = () => (dispatch: Dispatch<todolistActionType>) => {
     dispatch(setRequestStatusAC('loading'))
     todolistApi.getTodolists()
         .then(res => {
@@ -66,16 +73,20 @@ export const getTodolistsTC = () => (dispatch: Dispatch) => {
         })
 }
 
-export const addTodolistTC = (title: string) => (dispatch: Dispatch) => {
+export const addTodolistTC = (title: string) => (dispatch: Dispatch<todolistActionType>) => {
     dispatch(setRequestStatusAC('loading'))
     todolistApi.createTodolist(title)
         .then(res => {
-            dispatch(addTodolistAC(res.data.data.item))
-            dispatch(setRequestStatusAC('succeeded'))
+            if (res.data.resultCode === 0) {
+                dispatch(addTodolistAC(res.data.data.item))
+                dispatch(setRequestStatusAC('succeeded'))
+            } else {
+                handleServerAppError(res.data, dispatch)
+            }
         })
 }
 
-export const removeTodolistTC = (id: string) => (dispatch: Dispatch) => {
+export const removeTodolistTC = (id: string) => (dispatch: Dispatch<todolistActionType>) => {
     dispatch(setRequestStatusAC('loading'))
     dispatch(setEntityStatusAC(id, "loading"))
     todolistApi.deleteTodolist(id)
@@ -90,7 +101,7 @@ export const removeTodolistTC = (id: string) => (dispatch: Dispatch) => {
         })
 }
 
-export const updateTodolistTitleTC = (id: string, title: string) => (dispatch: Dispatch) => {
+export const updateTodolistTitleTC = (id: string, title: string) => (dispatch: Dispatch<todolistActionType>) => {
     dispatch(setRequestStatusAC('loading'))
     todolistApi.updateTodolist(id, title)
         .then(() => {
@@ -118,3 +129,4 @@ type todolistActionType =
     | ReturnType<typeof setTodolistsAC>
     | ReturnType<typeof setEntityStatusAC>
     | setRequestStatusACType
+    | setErrorACType

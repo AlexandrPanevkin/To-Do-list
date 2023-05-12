@@ -3,13 +3,13 @@ import {Grid, Paper} from "@mui/material";
 import {AddItemForm} from "../../components/AddItemForm";
 import {Todolist} from "./Todolist/Todolist";
 import {useSelector} from "react-redux";
-import {AppRootStateType, useAppDispatch} from "../../app/store";
+import {AppRootStateType, useAppDispatch, useAppSelector} from "../../app/store";
 import {
     addTodolistTC,
     changeFilterAC,
-    FilterValuesType, getTodolistsTC,
+    FilterValuesType,
+    getTodolistsTC,
     removeTodolistTC,
-    TodolistDomainType,
     updateTodolistTitleTC
 } from "./todolists-reducer";
 import {addTasksTC, removeTasksTC, updateTaskStatusTC, updateTaskTitleTC} from "./tasks-reducer";
@@ -20,7 +20,7 @@ export type TasksStateType = {
 }
 
 export const TodolistList = () => {
-    const todolists = useSelector<AppRootStateType, TodolistDomainType[]>(state => state.todolists)
+    const todolists = useAppSelector(state => state.todolists)
 
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
 
