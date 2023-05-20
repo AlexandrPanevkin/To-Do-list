@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {TodolistList} from "../features/TodolistsList/TodolistList";
 
 import './App.css';
@@ -10,16 +10,20 @@ import LinearProgress from "@mui/material/LinearProgress";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import {Menu} from "@mui/icons-material";
-import {useAppSelector} from "./store";
+import {useAppDispatch, useAppSelector} from "./store";
 import {ErrorSnackbar} from "../components/ErrorSnackbar";
 import {Login} from "../features/Login/Login";
 import {Navigate, Route, Routes} from "react-router-dom";
+import {initializeAppTC} from "../features/Login/auth-reducer";
 
 
 function App() {
 
+    const dispatch = useAppDispatch()
     const status = useAppSelector((state) => state.app.status)
-
+    useEffect(() => {
+        dispatch(initializeAppTC())
+    }, [])
     return (
         <div className="App">
             <AppBar position="static">
