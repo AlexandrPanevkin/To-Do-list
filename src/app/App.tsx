@@ -15,15 +15,26 @@ import {ErrorSnackbar} from "../components/ErrorSnackbar";
 import {Login} from "../features/Login/Login";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {initializeAppTC} from "../features/Login/auth-reducer";
+import {CircularProgress} from "@mui/material";
 
 
 function App() {
 
     const dispatch = useAppDispatch()
     const status = useAppSelector((state) => state.app.status)
+    const isInitialized = useAppSelector((state) => state.app.isInitialized)
+
     useEffect(() => {
         dispatch(initializeAppTC())
     }, [])
+
+    if (!isInitialized) {
+        return <div
+            style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
+            <CircularProgress/>
+        </div>
+    }
+
     return (
         <div className="App">
             <AppBar position="static">
