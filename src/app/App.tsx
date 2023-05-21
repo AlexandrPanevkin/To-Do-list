@@ -14,7 +14,7 @@ import {useAppDispatch, useAppSelector} from "./store";
 import {ErrorSnackbar} from "../components/ErrorSnackbar";
 import {Login} from "../features/Login/Login";
 import {Navigate, Route, Routes} from "react-router-dom";
-import {initializeAppTC} from "../features/Login/auth-reducer";
+import {initializeAppTC, logoutTC} from "../features/Login/auth-reducer";
 import {CircularProgress} from "@mui/material";
 
 
@@ -23,6 +23,11 @@ function App() {
     const dispatch = useAppDispatch()
     const status = useAppSelector((state) => state.app.status)
     const isInitialized = useAppSelector((state) => state.app.isInitialized)
+    const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn)
+
+    const logoutHandler = () => {
+        dispatch(logoutTC())
+    }
 
     useEffect(() => {
         dispatch(initializeAppTC())
@@ -43,9 +48,9 @@ function App() {
                         <Menu/>
                     </IconButton>
                     <Typography variant="h6">
-                        News
+                        Todos
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    {isLoggedIn && <Button onClick={logoutHandler} color="inherit">Logout</Button>}
                 </Toolbar>
             </AppBar>
             {status === 'loading' && <LinearProgress/>}
