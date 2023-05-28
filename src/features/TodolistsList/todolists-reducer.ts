@@ -8,6 +8,7 @@ import {
     setRequestStatusACType
 } from "../../app/app-reducer";
 import {handleServerAppError} from "../../utils/error-utils";
+import {getTasksTC} from "./tasks-reducer";
 
 const initialState: TodolistDomainType[] = []
 
@@ -37,6 +38,8 @@ export const todolistsReducer = (state: TodolistDomainType[] = initialState, act
         }
         case "SET-ENTITY-STATUS":
             return state.map(el => el.id === action.todolistId ? {...el, entityStatus: action.entityStatus} : el)
+        case "CLEAR-TODOS-DATA":
+            return []
         default:
             return state
     }
@@ -61,15 +64,24 @@ export const setEntityStatusAC = (todolistId: string, entityStatus: RequestStatu
     todolistId,
     entityStatus
 } as const)
+export const clearTodosDataAC = () => ({
+    type: 'CLEAR-TODOS-DATA'
+} as const)
 
 
 //thunks
-export const getTodolistsTC = () => (dispatch: Dispatch<todolistActionType>) => {
+export const getTodolistsTC = () => (dispatch: any) => {
     dispatch(setRequestStatusAC('loading'))
     todolistApi.getTodolists()
         .then(res => {
             dispatch(setTodolistsAC(res.data))
             dispatch(setRequestStatusAC('succeeded'))
+            return res.data
+        })
+        .then((res) => {
+            res.forEach((tl) => {
+                dispatch(getTasksTC(tl.id))
+            })
         })
 }
 
@@ -121,6 +133,7 @@ export type TodolistDomainType = TodolistType & {
 export type setTodolistsACType = ReturnType<typeof setTodolistsAC>
 export type addTodolistACType = ReturnType<typeof addTodolistAC>
 export type removeTodolistACType = ReturnType<typeof removeTodolistAC>
+export type clearTodosDataACType = ReturnType<typeof clearTodosDataAC>
 type todolistActionType =
     | removeTodolistACType
     | addTodolistACType
@@ -130,3 +143,4 @@ type todolistActionType =
     | ReturnType<typeof setEntityStatusAC>
     | setRequestStatusACType
     | setErrorACType
+    | clearTodosDataACType

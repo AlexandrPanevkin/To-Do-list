@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useEffect} from 'react';
+import React, {memo, useCallback} from 'react';
 import {AddItemForm} from '../../../components/AddItemForm';
 import {EditableSpan} from '../../../components/EditableSpan';
 import IconButton from '@mui/material/IconButton/IconButton';
@@ -7,8 +7,6 @@ import {Button} from "@mui/material";
 import {Task} from "./Task/Task";
 import {FilterValuesType} from "../todolists-reducer";
 import {TaskStatuses, TaskType} from '../../../api/todolist-api';
-import {useAppDispatch} from "../../../app/store";
-import {getTasksTC} from "../tasks-reducer";
 import {RequestStatusType} from "../../../app/app-reducer";
 
 
@@ -28,8 +26,6 @@ type PropsType = {
 }
 
 export const Todolist = memo((props: PropsType) => {
-
-    const dispatch = useAppDispatch()
 
     const removeTodolist = useCallback(() => {
         props.removeTodolist(props.todolistId);
@@ -61,10 +57,6 @@ export const Todolist = memo((props: PropsType) => {
     if (props.filter === "completed") {
         tasksForTodolist = props.tasks.filter(t => t.status === TaskStatuses.Completed);
     }
-
-    useEffect(() => {
-        dispatch(getTasksTC(props.todolistId))
-    }, [])
 
     return <div>
         <h3><EditableSpan value={props.title} onChange={changeTodolistTitle}/>

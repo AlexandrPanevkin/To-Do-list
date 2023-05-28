@@ -2,7 +2,7 @@ import {TaskStatuses, TaskType, todolistApi, UpdateTaskModelType} from "../../ap
 import {Dispatch} from "redux";
 import {AppRootStateType} from "../../app/store";
 import {TasksStateType} from "./TodolistList";
-import {addTodolistACType, removeTodolistACType, setTodolistsACType} from "./todolists-reducer";
+import {addTodolistACType, clearTodosDataACType, removeTodolistACType, setTodolistsACType} from "./todolists-reducer";
 import {setErrorAC, setErrorACType, setRequestStatusAC, setRequestStatusACType} from "../../app/app-reducer";
 import {handleServerNetworkError} from "../../utils/error-utils";
 import {AxiosError} from "axios";
@@ -59,6 +59,8 @@ export const tasksReducer = (state = initialState, action: tasksActionType) => {
                 [action.todolistId]: action.tasks
             }
         }
+        case "CLEAR-TODOS-DATA":
+            return {}
         default:
             return state
     }
@@ -109,8 +111,9 @@ export const addTasksTC = (todolistId: string, title: string) => (dispatch: Disp
                 dispatch(setRequestStatusAC('succeeded'))
             }
         })
-        .catch((e) => {
-            handleServerNetworkError(dispatch, e.message)
+        .catch((e: AxiosError<ErrorsType>) => {
+            const errorMessage = e.response ? e.response?.data.message : e.message
+            handleServerNetworkError(dispatch, errorMessage)
         })
 }
 export const updateTaskStatusTC = (id: string, status: TaskStatuses, todolistId: string) => (dispatch: Dispatch<tasksActionType>, getState: () => AppRootStateType) => {
@@ -170,3 +173,9 @@ export type tasksActionType =
     | ReturnType<typeof setTasksAC>
     | setRequestStatusACType
     | setErrorACType
+    | clearTodosDataACType
+
+type ErrorsType = {
+    field: string
+    message: string
+}
