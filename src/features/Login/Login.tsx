@@ -30,7 +30,6 @@ const validate = (values: any) => {
             password: 'Password is required'
         }
     }
-
 };
 
 export const Login = () => {
