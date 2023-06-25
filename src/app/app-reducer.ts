@@ -5,19 +5,22 @@ import { handleServerNetworkError } from "utils/error-utils";
 import { authActions } from "features/Login/auth-reducer";
 
 export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed";
+export type AppInitialStateType = typeof initialState;
+
+const initialState = {
+  status: "idle" as RequestStatusType,
+  error: null as null | string,
+  isInitialized: false,
+};
 
 const slice = createSlice({
   name: "app",
-  initialState: {
-    status: "idle" as RequestStatusType,
-    error: null as null | string,
-    isInitialized: false,
-  },
+  initialState,
   reducers: {
     setAppError: (state, action: PayloadAction<{ error: null | string }>) => {
       state.error = action.payload.error;
     },
-    setStatus: (state, action: PayloadAction<{ status: RequestStatusType }>) => {
+    setAppStatus: (state, action: PayloadAction<{ status: RequestStatusType }>) => {
       state.status = action.payload.status;
     },
     setIsInitialized: (state, action: PayloadAction<{ isInitialized: boolean }>) => {
@@ -30,16 +33,16 @@ export const appReducer = slice.reducer;
 export const appActions = slice.actions;
 
 export const initializeAppTC = () => (dispatch: Dispatch) => {
-  dispatch(appActions.setStatus({ status: "loading" }));
+  dispatch(appActions.setAppStatus({ status: "loading" }));
   authAPI
     .me()
     .then((res) => {
       if (res.data.resultCode === 0) {
         dispatch(authActions.setIsLoggedIn({ isLoggedIn: true }));
-        dispatch(appActions.setStatus({ status: "succeeded" }));
+        dispatch(appActions.setAppStatus({ status: "succeeded" }));
       } else {
         dispatch(appActions.setAppError({ error: res.data.messages.length ? res.data.messages[0] : "Error" }));
-        dispatch(appActions.setStatus({ status: "succeeded" }));
+        dispatch(appActions.setAppStatus({ status: "succeeded" }));
       }
     })
     .catch((e) => {
