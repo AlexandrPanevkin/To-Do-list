@@ -1,15 +1,14 @@
-import { TaskStatuses, TaskType, todolistApi, UpdateTaskModelType } from "../../api/todolist-api";
+import { TaskStatuses, TaskType, todolistApi, UpdateTaskModelType } from "api/todolist-api";
 import { Dispatch } from "redux";
-import { AppRootStateType } from "../../app/store";
+import { AppRootStateType } from "app/store";
 import { TasksStateType } from "./TodolistList";
-import { addTodolistACType, clearTodosDataACType, removeTodolistACType, setTodolistsACType } from "./todolists-reducer";
-import { setErrorAC, setErrorACType, setRequestStatusAC, setRequestStatusACType } from "../../app/app-reducer";
-import { handleServerNetworkError } from "../../utils/error-utils";
+import { handleServerNetworkError } from "utils/error-utils";
 import { AxiosError } from "axios";
+import { appActions } from "app/app-reducer";
 
 const initialState: TasksStateType = {};
 
-export const tasksReducer = (state = initialState, action: tasksActionType) => {
+export const tasksReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case "REMOVE-TASK":
       return {
@@ -47,7 +46,7 @@ export const tasksReducer = (state = initialState, action: tasksActionType) => {
       };
     case "SET-TODOLISTS": {
       let copyState = { ...state };
-      action.todolists.forEach((td) => {
+      action.todolists.forEach((td: { id: string | number }) => {
         copyState[td.id] = [];
       });
       return copyState;
@@ -95,31 +94,31 @@ export const changeTaskTitleAC = (id: string, newTitle: string, todolistId: stri
   } as const);
 
 // thunks
-export const getTasksTC = (todolistId: string) => (dispatch: Dispatch<tasksActionType>) => {
-  dispatch(setRequestStatusAC("loading"));
+export const getTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
+  dispatch(appActions.setAppStatus({ status: "loading" }));
   todolistApi.getTasks(todolistId).then((res) => {
     dispatch(setTasksAC(todolistId, res.data.items));
-    dispatch(setRequestStatusAC("succeeded"));
+    dispatch(appActions.setAppStatus({ status: "succeeded" }));
   });
 };
-export const removeTasksTC = (taskId: string, todolistId: string) => (dispatch: Dispatch<tasksActionType>) => {
-  dispatch(setRequestStatusAC("loading"));
+export const removeTasksTC = (taskId: string, todolistId: string) => (dispatch: Dispatch) => {
+  dispatch(appActions.setAppStatus({ status: "loading" }));
   todolistApi.deleteTask(todolistId, taskId).then(() => {
     dispatch(removeTaskAC(taskId, todolistId));
-    dispatch(setRequestStatusAC("succeeded"));
+    dispatch(appActions.setAppStatus({ status: "succeeded" }));
   });
 };
-export const addTasksTC = (todolistId: string, title: string) => (dispatch: Dispatch<tasksActionType>) => {
-  dispatch(setRequestStatusAC("loading"));
+export const addTasksTC = (todolistId: string, title: string) => (dispatch: Dispatch) => {
+  dispatch(appActions.setAppStatus({ status: "loading" }));
   todolistApi
     .createTask(todolistId, title)
     .then((res) => {
       if (res.data.resultCode === 0) {
         dispatch(addTaskAC(res.data.data.item));
-        dispatch(setRequestStatusAC("succeeded"));
+        dispatch(appActions.setAppStatus({ status: "succeeded" }));
       } else {
-        dispatch(setErrorAC(res.data.messages.length ? res.data.messages[0] : "Error"));
-        dispatch(setRequestStatusAC("succeeded"));
+        dispatch(appActions.setAppError({ error: res.data.messages.length ? res.data.messages[0] : "Error" }));
+        dispatch(appActions.setAppStatus({ status: "succeeded" }));
       }
     })
     .catch((e: AxiosError<ErrorsType>) => {
@@ -128,9 +127,8 @@ export const addTasksTC = (todolistId: string, title: string) => (dispatch: Disp
     });
 };
 export const updateTaskStatusTC =
-  (id: string, status: TaskStatuses, todolistId: string) =>
-  (dispatch: Dispatch<tasksActionType>, getState: () => AppRootStateType) => {
-    dispatch(setRequestStatusAC("loading"));
+  (id: string, status: TaskStatuses, todolistId: string) => (dispatch: Dispatch, getState: () => AppRootStateType) => {
+    dispatch(appActions.setAppStatus({ status: "loading" }));
     const task = getState().tasks[todolistId].find((el) => el.id === id);
     if (task) {
       const model: UpdateTaskModelType = {
@@ -145,7 +143,7 @@ export const updateTaskStatusTC =
         .updateTask(todolistId, id, model)
         .then(() => {
           dispatch(changeTaskStatusAC(id, status, todolistId));
-          dispatch(setRequestStatusAC("succeeded"));
+          dispatch(appActions.setAppStatus({ status: "succeeded" }));
         })
         .catch((e: AxiosError) => {
           handleServerNetworkError(dispatch, e.message);
@@ -153,11 +151,10 @@ export const updateTaskStatusTC =
     }
   };
 export const updateTaskTitleTC =
-  (id: string, newTitle: string, todolistId: string) =>
-  (dispatch: Dispatch<tasksActionType>, getState: () => AppRootStateType) => {
+  (id: string, newTitle: string, todolistId: string) => (dispatch: Dispatch, getState: () => AppRootStateType) => {
     const task = getState().tasks[todolistId].find((el) => el.id === id);
     if (task) {
-      dispatch(setRequestStatusAC("loading"));
+      dispatch(appActions.setAppStatus({ status: "loading" }));
       const model: UpdateTaskModelType = {
         title: newTitle,
         status: task.status,
@@ -170,7 +167,7 @@ export const updateTaskTitleTC =
         .updateTask(todolistId, id, model)
         .then(() => {
           dispatch(changeTaskTitleAC(id, newTitle, todolistId));
-          dispatch(setRequestStatusAC("succeeded"));
+          dispatch(appActions.setAppStatus({ status: "succeeded" }));
         })
         .catch((e) => {
           handleServerNetworkError(dispatch, e.message);
@@ -179,18 +176,6 @@ export const updateTaskTitleTC =
   };
 
 // types
-export type tasksActionType =
-  | ReturnType<typeof removeTaskAC>
-  | ReturnType<typeof addTaskAC>
-  | ReturnType<typeof changeTaskStatusAC>
-  | ReturnType<typeof changeTaskTitleAC>
-  | addTodolistACType
-  | removeTodolistACType
-  | setTodolistsACType
-  | ReturnType<typeof setTasksAC>
-  | setRequestStatusACType
-  | setErrorACType
-  | clearTodosDataACType;
 
 type ErrorsType = {
   field: string;
