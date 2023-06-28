@@ -17,8 +17,8 @@ import { TaskStatuses, TaskType } from "api/todolist-api";
 import { Navigate } from "react-router-dom";
 
 export type TasksStateType = {
-  [key: string]: Array<TaskType>;
-};
+    [key: string]: Array<TaskType>
+}
 
 export const TodolistList = () => {
   const todolists = useAppSelector((state) => state.todolists);
