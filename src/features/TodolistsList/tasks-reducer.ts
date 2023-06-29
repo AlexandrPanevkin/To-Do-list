@@ -5,106 +5,73 @@ import { TasksStateType } from "./TodolistList";
 import { handleServerNetworkError } from "utils/error-utils";
 import { AxiosError } from "axios";
 import { appActions } from "app/app-reducer";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { todolistsActions } from "features/TodolistsList/todolists-reducer";
 
-const initialState: TasksStateType = {};
-
-export const tasksReducer = (state = initialState, action: any) => {
-  switch (action.type) {
-    case "REMOVE-TASK":
-      return {
-        ...state,
-        [action.payload.todolistId]: state[action.payload.todolistId].filter((el) => el.id !== action.payload.id),
-      };
-    case "ADD-TASK":
-      return {
-        ...state,
-        [action.task.todoListId]: [action.task, ...state[action.task.todoListId]],
-      };
-    case "CHANGE-TASK-STATUS":
-      return {
-        ...state,
-        [action.payload.todolistId]: state[action.payload.todolistId].map((el) =>
-          el.id === action.payload.id
-            ? {
-                ...el,
-                status: action.payload.status,
-              }
-            : el
-        ),
-      };
-    case "CHANGE-TASK-TITLE":
-      return {
-        ...state,
-        [action.payload.todolistId]: state[action.payload.todolistId].map((el) =>
-          el.id === action.payload.id
-            ? {
-                ...el,
-                title: action.payload.newTitle,
-              }
-            : el
-        ),
-      };
-    case "SET-TODOLISTS": {
-      let copyState = { ...state };
-      action.todolists.forEach((td: { id: string | number }) => {
-        copyState[td.id] = [];
+const slice = createSlice({
+  name: "tasks",
+  initialState: {} as TasksStateType,
+  reducers: {
+    removeTask: (state, action: PayloadAction<{ id: string; todolistId: string }>) => {
+      const tasks = state[action.payload.todolistId];
+      const index = tasks.findIndex((t) => t.id === action.payload.id);
+      if (index !== -1) tasks.splice(index, 1);
+    },
+    addTask: (state, action: PayloadAction<{ task: TaskType }>) => {
+      state[action.payload.task.todoListId].unshift(action.payload.task);
+    },
+    changeTaskTitle: (state, action: PayloadAction<{ id: string; newTitle: string; todolistId: string }>) => {
+      const tasks = state[action.payload.todolistId];
+      const index = tasks.findIndex((t) => t.id === action.payload.id);
+      if (index !== -1) {
+        tasks[index].title = action.payload.newTitle;
+      }
+    },
+    changeTaskStatus: (state, action: PayloadAction<{ id: string; status: TaskStatuses; todolistId: string }>) => {
+      const tasks = state[action.payload.todolistId];
+      const index = tasks.findIndex((t) => t.id === action.payload.id);
+      if (index !== -1) {
+        tasks[index].status = action.payload.status;
+      }
+    },
+    setTasks: (state, action: PayloadAction<{ todolistId: string; tasks: TaskType[] }>) => {
+      state[action.payload.todolistId] = action.payload.tasks;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(todolistsActions.addTodolist, (state, action) => {
+        state[action.payload.todolist.id] = [];
+      })
+      .addCase(todolistsActions.removeTodolist, (state, action) => {
+        delete state[action.payload.id];
+      })
+      .addCase(todolistsActions.setTodolists, (state, action) => {
+        action.payload.todolists.forEach((td) => {
+          state[td.id] = [];
+        });
+      })
+      .addCase(todolistsActions.clearTodolistsData, (state, action) => {
+        return {};
       });
-      return copyState;
-    }
-    case "ADD-TODOLIST":
-      return {
-        ...state,
-        [action.todolist.id]: [],
-      };
-    case "REMOVE-TODOLIST":
-      let copyState = { ...state };
-      delete copyState[action.todolistId];
-      return copyState;
-    case "SET-TASKS": {
-      return {
-        ...state,
-        [action.todolistId]: action.tasks,
-      };
-    }
-    case "CLEAR-TODOS-DATA":
-      return {};
-    default:
-      return state;
-  }
-};
+  },
+});
 
-// actions
-export const setTasksAC = (todolistId: string, tasks: TaskType[]) =>
-  ({ type: "SET-TASKS", todolistId, tasks } as const);
-export const removeTaskAC = (id: string, todolistId: string) =>
-  ({
-    type: "REMOVE-TASK",
-    payload: { id, todolistId },
-  } as const);
-export const addTaskAC = (task: TaskType) => ({ type: "ADD-TASK", task } as const);
-export const changeTaskStatusAC = (id: string, status: TaskStatuses, todolistId: string) =>
-  ({
-    type: "CHANGE-TASK-STATUS",
-    payload: { id, status, todolistId },
-  } as const);
-export const changeTaskTitleAC = (id: string, newTitle: string, todolistId: string) =>
-  ({
-    type: "CHANGE-TASK-TITLE",
-    payload: { id, newTitle, todolistId },
-  } as const);
+export const tasksReducer = slice.reducer;
+export const tasksActions = slice.actions;
 
 // thunks
 export const getTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
   dispatch(appActions.setAppStatus({ status: "loading" }));
   todolistApi.getTasks(todolistId).then((res) => {
-    dispatch(setTasksAC(todolistId, res.data.items));
+    dispatch(tasksActions.setTasks({ todolistId, tasks: res.data.items }));
     dispatch(appActions.setAppStatus({ status: "succeeded" }));
   });
 };
 export const removeTasksTC = (taskId: string, todolistId: string) => (dispatch: Dispatch) => {
   dispatch(appActions.setAppStatus({ status: "loading" }));
   todolistApi.deleteTask(todolistId, taskId).then(() => {
-    dispatch(removeTaskAC(taskId, todolistId));
+    dispatch(tasksActions.removeTask({ id: taskId, todolistId }));
     dispatch(appActions.setAppStatus({ status: "succeeded" }));
   });
 };
@@ -114,7 +81,7 @@ export const addTasksTC = (todolistId: string, title: string) => (dispatch: Disp
     .createTask(todolistId, title)
     .then((res) => {
       if (res.data.resultCode === 0) {
-        dispatch(addTaskAC(res.data.data.item));
+        dispatch(tasksActions.addTask({ task: res.data.data.item }));
         dispatch(appActions.setAppStatus({ status: "succeeded" }));
       } else {
         dispatch(appActions.setAppError({ error: res.data.messages.length ? res.data.messages[0] : "Error" }));
@@ -142,7 +109,7 @@ export const updateTaskStatusTC =
       todolistApi
         .updateTask(todolistId, id, model)
         .then(() => {
-          dispatch(changeTaskStatusAC(id, status, todolistId));
+          dispatch(tasksActions.changeTaskStatus({ id, status, todolistId }));
           dispatch(appActions.setAppStatus({ status: "succeeded" }));
         })
         .catch((e: AxiosError) => {
@@ -166,7 +133,7 @@ export const updateTaskTitleTC =
       todolistApi
         .updateTask(todolistId, id, model)
         .then(() => {
-          dispatch(changeTaskTitleAC(id, newTitle, todolistId));
+          dispatch(tasksActions.changeTaskTitle({ id, newTitle, todolistId }));
           dispatch(appActions.setAppStatus({ status: "succeeded" }));
         })
         .catch((e) => {
