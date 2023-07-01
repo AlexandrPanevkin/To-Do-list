@@ -17,12 +17,15 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { logoutTC } from "features/Login/auth-reducer";
 import { CircularProgress } from "@mui/material";
 import { initializeAppTC } from "app/app-reducer";
+import { selectIsInitialized, selectStatus } from "app/app.selectors";
+import { selectIsLoggedIn } from "features/Login/auth.selectors";
 
 function App() {
   const dispatch = useAppDispatch();
-  const status = useAppSelector((state) => state.app.status);
-  const isInitialized = useAppSelector((state) => state.app.isInitialized);
-  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+
+  const status = useAppSelector(selectStatus);
+  const isInitialized = useAppSelector(selectIsInitialized);
+  const isLoggedIn = useAppSelector(selectIsLoggedIn);
 
   const logoutHandler = () => {
     dispatch(logoutTC());
