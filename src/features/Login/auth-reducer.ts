@@ -3,7 +3,7 @@ import { authAPI, LoginParamsType } from "api/todolist-api";
 import { handleServerNetworkError } from "utils/error-utils";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { appActions } from "app/app-reducer";
-import { todolistsActions } from "features/TodolistsList/todolists-reducer";
+import { clearTasksAndTodolists } from "common/common.actions";
 
 const slice = createSlice({
   name: "auth",
@@ -46,7 +46,7 @@ export const logoutTC = () => (dispatch: Dispatch) => {
       if (res.data.resultCode === 0) {
         dispatch(authActions.setIsLoggedIn({ isLoggedIn: false }));
         dispatch(appActions.setAppStatus({ status: "succeeded" }));
-        dispatch(todolistsActions.clearTodolistsData());
+        dispatch(clearTasksAndTodolists());
       } else {
         dispatch(appActions.setAppError({ error: res.data.messages.length ? res.data.messages[0] : "Error" }));
         dispatch(appActions.setAppStatus({ status: "succeeded" }));

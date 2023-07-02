@@ -7,6 +7,7 @@ import { AxiosError } from "axios";
 import { appActions } from "app/app-reducer";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { todolistsActions } from "features/TodolistsList/todolists-reducer";
+import { clearTasksAndTodolists } from "common/common.actions";
 
 const slice = createSlice({
   name: "tasks",
@@ -51,7 +52,7 @@ const slice = createSlice({
           state[td.id] = [];
         });
       })
-      .addCase(todolistsActions.clearTodolistsData, (state, action) => {
+      .addCase(clearTasksAndTodolists.type, () => {
         return {};
       });
   },
