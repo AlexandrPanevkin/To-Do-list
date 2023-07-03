@@ -2,7 +2,7 @@ import { todolistApi, TodolistType } from "api/todolist-api";
 import { Dispatch } from "redux";
 
 import { handleServerAppError } from "utils/error-utils";
-import { getTasksTC } from "./tasks-reducer";
+import { tasksThunk } from "./tasks-reducer";
 import { appActions, RequestStatusType } from "app/app-reducer";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { clearTasksAndTodolists } from "common/common.actions";
@@ -57,7 +57,7 @@ export const getTodolistsTC = () => (dispatch: any) => {
     })
     .then((res) => {
       res.forEach((tl) => {
-        dispatch(getTasksTC(tl.id));
+        dispatch(tasksThunk.fetchTasks(tl.id));
       });
     });
 };

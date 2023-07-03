@@ -2,8 +2,7 @@ import React, { useCallback, useEffect } from "react";
 import { Grid, Paper } from "@mui/material";
 import { AddItemForm } from "components/AddItemForm";
 import { Todolist } from "./Todolist/Todolist";
-import { useSelector } from "react-redux";
-import { AppRootStateType, useAppDispatch, useAppSelector } from "app/store";
+import { useAppDispatch, useAppSelector } from "app/store";
 import {
   addTodolistTC,
   FilterValuesType,
