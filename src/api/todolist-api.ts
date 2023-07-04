@@ -127,3 +127,8 @@ export type UserType = {
   email: string;
   login: string;
 };
+
+export type RemoveTaskArgType = {
+  todolistId: string;
+  taskId: string;
+};
