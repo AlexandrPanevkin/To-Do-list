@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from "axios";
+import { UpdateDomainTaskModelType } from "features/TodolistsList/tasks-reducer";
 
 const instance = axios.create({
   baseURL: "https://social-network.samuraijs.com/api/1.1/",
@@ -31,10 +32,7 @@ export const todolistApi = {
     });
   },
   updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
-    return instance.put<UpdateTaskModelType, ResponseType<{ item: TaskType }>>(
-      `todo-lists/${todolistId}/tasks/${taskId}`,
-      model
-    );
+    return instance.put<ResponseType<TaskType>>(`todo-lists/${todolistId}/tasks/${taskId}`, model);
   },
   deleteTask(todolistId: string, taskId: string) {
     return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`);
@@ -131,4 +129,10 @@ export type UserType = {
 export type RemoveTaskArgType = {
   todolistId: string;
   taskId: string;
+};
+
+export type UpdateTaskArgType = {
+  taskId: string;
+  domainModel: UpdateDomainTaskModelType;
+  todolistId: string;
 };

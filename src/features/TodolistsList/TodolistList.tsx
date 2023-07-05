@@ -11,7 +11,7 @@ import {
   todolistsActions,
   updateTodolistTitleTC,
 } from "./todolists-reducer";
-import { tasksThunk, updateTaskStatusTC, updateTaskTitleTC } from "./tasks-reducer";
+import { tasksThunk, UpdateDomainTaskModelType, updateTaskTitleTC } from "./tasks-reducer";
 import { TaskStatuses, TaskType } from "api/todolist-api";
 import { Navigate } from "react-router-dom";
 import { selectIsLoggedIn } from "features/Login/auth.selectors";
@@ -49,8 +49,8 @@ export const TodolistList = () => {
   );
 
   const changeStatus = useCallback(
-    (id: string, status: TaskStatuses, todolistId: string) => {
-      dispatch(updateTaskStatusTC(id, status, todolistId));
+    (taskId: string, status: TaskStatuses, todolistId: string) => {
+      dispatch(tasksThunk.updateTask({ taskId, domainModel: { status }, todolistId }));
     },
     [dispatch]
   );

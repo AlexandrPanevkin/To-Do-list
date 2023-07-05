@@ -134,11 +134,8 @@ test("correct task should be added to correct array", () => {
   expect(endState["todolistId2"][0].status).toBe(TaskStatuses.New);
 });
 test("status of specified task should be changed", () => {
-  const action = tasksActions.changeTaskStatus({
-    id: "2",
-    status: TaskStatuses.New,
-    todolistId: "todolistId2",
-  });
+  const args = { taskId: "2", domainModel: { status: TaskStatuses.New }, todolistId: "todolistId2" };
+  const action = tasksThunk.updateTask.fulfilled(args, "requestId", args);
 
   const endState = tasksReducer(startState, action);
 
