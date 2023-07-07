@@ -143,7 +143,8 @@ test("status of specified task should be changed", () => {
   expect(endState["todolistId2"][1].status).toBe(TaskStatuses.New);
 });
 test("title of specified task should be changed", () => {
-  const action = tasksActions.changeTaskTitle({ id: "2", newTitle: "yogurt", todolistId: "todolistId2" });
+  const args = { taskId: "2", domainModel: { title: "yogurt" }, todolistId: "todolistId2" };
+  const action = tasksThunk.updateTask.fulfilled(args, "requestId", args);
 
   const endState = tasksReducer(startState, action);
 

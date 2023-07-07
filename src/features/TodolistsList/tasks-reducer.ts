@@ -20,15 +20,7 @@ import { createAppAsyncThunk } from "utils/create-app-async-thunk";
 const slice = createSlice({
   name: "tasks",
   initialState: {} as TasksStateType,
-  reducers: {
-    changeTaskTitle: (state, action: PayloadAction<{ id: string; newTitle: string; todolistId: string }>) => {
-      const tasks = state[action.payload.todolistId];
-      const index = tasks.findIndex((t) => t.id === action.payload.id);
-      if (index !== -1) {
-        tasks[index].title = action.payload.newTitle;
-      }
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchTasks.fulfilled, (state, action) => {
@@ -146,6 +138,7 @@ const updateTask = createAppAsyncThunk<UpdateTaskArgType, UpdateTaskArgType>(
         startDate: task.startDate,
         title: task.title,
         status: task.status,
+        ...arg.domainModel,
       };
 
       const res = await todolistApi.updateTask(arg.todolistId, arg.taskId, apiModel);
@@ -162,41 +155,6 @@ const updateTask = createAppAsyncThunk<UpdateTaskArgType, UpdateTaskArgType>(
     }
   }
 );
-
-//     export const _updateTaskStatusTC =
-//         (id: string, status: TaskStatuses, todolistId: string) => (dispatch: Dispatch, getState: () => AppRootStateType) => {
-//
-//             todolistApi
-//                 .then(() => {
-//                     dispatch(tasksActions.changeTaskStatus({id, status, todolistId}));
-//                     dispatch(appActions.setAppStatus({status: "succeeded"}));
-//                 })
-//         }
-// };
-export const updateTaskTitleTC =
-  (id: string, newTitle: string, todolistId: string) => (dispatch: Dispatch, getState: () => AppRootStateType) => {
-    const task = getState().tasks[todolistId].find((el) => el.id === id);
-    if (task) {
-      dispatch(appActions.setAppStatus({ status: "loading" }));
-      const model: UpdateTaskModelType = {
-        title: newTitle,
-        status: task.status,
-        deadline: task.deadline,
-        description: task.description,
-        priority: task.priority,
-        startDate: task.startDate,
-      };
-      todolistApi
-        .updateTask(todolistId, id, model)
-        .then(() => {
-          dispatch(tasksActions.changeTaskTitle({ id, newTitle, todolistId }));
-          dispatch(appActions.setAppStatus({ status: "succeeded" }));
-        })
-        .catch((e) => {
-          handleServerNetworkError(dispatch, e.message);
-        });
-    }
-  };
 
 export const tasksReducer = slice.reducer;
 export const tasksActions = slice.actions;
