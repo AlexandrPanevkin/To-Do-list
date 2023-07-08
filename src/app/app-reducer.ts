@@ -1,11 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Dispatch } from "redux";
-import { authAPI } from "api/todolist-api";
-import { handleServerNetworkError } from "utils/error-utils";
-import { authActions } from "features/Login/auth-reducer";
-
-export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed";
-export type AppInitialStateType = typeof initialState;
+import { authActions } from "features/auth/auth-reducer";
+import { handleServerNetworkError } from "common/utils/handle-server-network-error";
+import { authAPI } from "features/auth/auth.api";
 
 const initialState = {
   status: "idle" as RequestStatusType,
@@ -52,3 +49,6 @@ export const initializeAppTC = () => (dispatch: Dispatch) => {
       dispatch(appActions.setIsInitialized({ isInitialized: true }));
     });
 };
+
+export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed";
+export type AppInitialStateType = typeof initialState;

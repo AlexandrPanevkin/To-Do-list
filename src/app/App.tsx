@@ -11,14 +11,14 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { Menu } from "@mui/icons-material";
 import { useAppDispatch, useAppSelector } from "./store";
-import { ErrorSnackbar } from "components/ErrorSnackbar";
-import { Login } from "features/Login/Login";
+import { ErrorSnackbar } from "common/components/ErrorSnackbar/ErrorSnackbar";
+import { Login } from "features/auth/Login";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { logoutTC } from "features/Login/auth-reducer";
+import { logoutTC } from "features/auth/auth-reducer";
 import { CircularProgress } from "@mui/material";
 import { initializeAppTC } from "app/app-reducer";
 import { selectIsInitialized, selectStatus } from "app/app.selectors";
-import { selectIsLoggedIn } from "features/Login/auth.selectors";
+import { selectIsLoggedIn } from "features/auth/auth.selectors";
 
 function App() {
   const dispatch = useAppDispatch();

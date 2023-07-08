@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import { Grid, Paper } from "@mui/material";
-import { AddItemForm } from "components/AddItemForm";
+import { AddItemForm } from "common/components/AddItemForm/AddItemForm";
 import { Todolist } from "./Todolist/Todolist";
 import { useAppDispatch, useAppSelector } from "app/store";
 import {
@@ -12,11 +12,12 @@ import {
   updateTodolistTitleTC,
 } from "./todolists-reducer";
 import { tasksThunk } from "./tasks-reducer";
-import { TaskStatuses, TaskType } from "api/todolist-api";
+import { TaskType } from "features/TodolistsList/todolists.api";
 import { Navigate } from "react-router-dom";
-import { selectIsLoggedIn } from "features/Login/auth.selectors";
+import { selectIsLoggedIn } from "features/auth/auth.selectors";
 import { selectTodolists } from "features/TodolistsList/todolists.selectors";
 import { selectTasks } from "features/TodolistsList/tasks.selectors";
+import { TaskStatuses } from "common/enums";
 
 export type TasksStateType = {
   [key: string]: Array<TaskType>;
