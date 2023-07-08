@@ -1,6 +1,6 @@
-import { ResponseType } from "features/TodolistsList/todolists.api";
 import { Dispatch } from "redux";
 import { appActions } from "app/app-reducer";
+import { ResponseType } from "common/types/common.types";
 
 export const handleServerAppError = <T>(data: ResponseType<T>, dispatch: Dispatch) => {
   if (data.messages.length) {

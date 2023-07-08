@@ -1,7 +1,8 @@
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 
 import { instance } from "common/api/comon.api";
-import { ResponseType, UserType } from "features/TodolistsList/todolists.types";
+import { UserType } from "features/TodolistsList/todolists.types";
+import { ResponseType } from "common/types/common.types";
 
 export const authAPI = {
   login(data: LoginParamsType) {

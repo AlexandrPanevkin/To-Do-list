@@ -1,10 +1,4 @@
-import {
-  RemoveTaskArgType,
-  TaskType,
-  todolistsApi,
-  UpdateTaskArgType,
-  UpdateTaskModelType,
-} from "features/TodolistsList/todolists.api";
+import { todolistsApi } from "features/TodolistsList/todolists.api";
 import { TasksStateType } from "./TodolistList";
 import { appActions } from "app/app-reducer";
 import { createSlice } from "@reduxjs/toolkit";
@@ -12,6 +6,12 @@ import { todolistsActions } from "features/TodolistsList/todolists-reducer";
 import { clearTasksAndTodolists } from "common/actions/common.actions";
 import { handleServerNetworkError, handleServerAppError, createAppAsyncThunk } from "common/utils";
 import { TaskPriorities, TaskStatuses } from "common/enums";
+import {
+  RemoveTaskArgType,
+  TaskType,
+  UpdateTaskArgType,
+  UpdateTaskModelType,
+} from "features/TodolistsList/todolists.types";
 
 const slice = createSlice({
   name: "tasks",

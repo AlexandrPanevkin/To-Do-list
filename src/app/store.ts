@@ -20,7 +20,7 @@ export const store = configureStore({
 
 export type ThunkDispatchType = ThunkDispatch<AppRootStateType, any, AnyAction>;
 
-export const useAppDispatch = () => useDispatch<ThunkDispatchType>();
+export type AppDispatch = ThunkDispatch<AppRootStateType, unknown, AnyAction>;
 
 export const useAppSelector: TypedUseSelectorHook<AppRootStateType> = useSelector;
 

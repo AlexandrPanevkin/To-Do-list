@@ -6,9 +6,9 @@ import { Delete } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import { Task } from "./Task/Task";
 import { FilterValuesType } from "../todolists-reducer";
-import { TaskType } from "features/TodolistsList/todolists.api";
 import { RequestStatusType } from "app/app-reducer";
 import { TaskStatuses } from "common/enums";
+import { TaskType } from "features/TodolistsList/todolists.types";
 
 type PropsType = {
   todolistId: string;
