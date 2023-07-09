@@ -1,8 +1,8 @@
-import { tasksActions, tasksReducer, tasksThunk } from "./tasks-reducer";
+import { tasksReducer, tasksThunks } from "./tasks-reducer";
 
 import { todolistsActions } from "features/TodolistsList/todolists-reducer";
 import { TasksStateType } from "features/TodolistsList/TodolistList";
-import { TaskStatuses, TaskPriorities } from "common/enums";
+import { TaskPriorities, TaskStatuses } from "common/enums";
 
 let startState: TasksStateType = {};
 beforeEach(() => {
@@ -94,7 +94,7 @@ beforeEach(() => {
 
 test("correct task should be deleted from correct array", () => {
   const args = { taskId: "2", todolistId: "todolistId2" };
-  const action = tasksThunk.removeTask.fulfilled(args, "requestId", args);
+  const action = tasksThunks.removeTask.fulfilled(args, "requestId", args);
 
   const endState = tasksReducer(startState, action);
 
@@ -117,7 +117,7 @@ test("correct task should be added to correct array", () => {
     completed: false,
   };
 
-  const action = tasksThunk.addTask.fulfilled(
+  const action = tasksThunks.addTask.fulfilled(
     {
       task,
     },
@@ -135,7 +135,7 @@ test("correct task should be added to correct array", () => {
 });
 test("status of specified task should be changed", () => {
   const args = { taskId: "2", domainModel: { status: TaskStatuses.New }, todolistId: "todolistId2" };
-  const action = tasksThunk.updateTask.fulfilled(args, "requestId", args);
+  const action = tasksThunks.updateTask.fulfilled(args, "requestId", args);
 
   const endState = tasksReducer(startState, action);
 
@@ -144,7 +144,7 @@ test("status of specified task should be changed", () => {
 });
 test("title of specified task should be changed", () => {
   const args = { taskId: "2", domainModel: { title: "yogurt" }, todolistId: "todolistId2" };
-  const action = tasksThunk.updateTask.fulfilled(args, "requestId", args);
+  const action = tasksThunks.updateTask.fulfilled(args, "requestId", args);
 
   const endState = tasksReducer(startState, action);
 
@@ -201,7 +201,7 @@ test("empty arrays should be added when we set todolists", () => {
   expect(endState["2"]).toBeDefined();
 });
 test("tasks should be added for todolist", () => {
-  const action = tasksThunk.fetchTasks.fulfilled(
+  const action = tasksThunks.fetchTasks.fulfilled(
     {
       tasks: startState["todolistId1"],
       todolistId: "todolistId1",

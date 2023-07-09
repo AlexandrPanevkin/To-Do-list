@@ -5,13 +5,12 @@ import { Todolist } from "./Todolist/Todolist";
 import { useAppSelector } from "app/store";
 import {
   addTodolistTC,
+  fetchTodolists,
   FilterValuesType,
-  getTodolistsTC,
   removeTodolistTC,
   todolistsActions,
   updateTodolistTitleTC,
 } from "./todolists-reducer";
-import { tasksThunk } from "./tasks-reducer";
 import { Navigate } from "react-router-dom";
 import { selectIsLoggedIn } from "features/auth/auth.selectors";
 import { selectTodolists } from "features/TodolistsList/todolists.selectors";
@@ -19,6 +18,7 @@ import { selectTasks } from "features/TodolistsList/tasks.selectors";
 import { TaskStatuses } from "common/enums";
 import { useAppDispatch } from "common/hooks";
 import { TaskType } from "features/TodolistsList/todolists.types";
+import { tasksThunks } from "features/TodolistsList/tasks-reducer";
 
 export type TasksStateType = {
   [key: string]: Array<TaskType>;
@@ -33,33 +33,33 @@ export const TodolistList = () => {
 
   useEffect(() => {
     if (!isLoggedIn) return;
-    dispatch(getTodolistsTC());
+    dispatch(fetchTodolists());
   }, []);
 
   const removeTask = useCallback(
     (taskId: string, todolistId: string) => {
-      dispatch(tasksThunk.removeTask({ taskId, todolistId }));
+      dispatch(tasksThunks.removeTask({ taskId, todolistId }));
     },
     [dispatch]
   );
 
   const addTask = useCallback(
     (title: string, todolistId: string) => {
-      dispatch(tasksThunk.addTask({ todolistId, title }));
+      dispatch(tasksThunks.addTask({ todolistId, title }));
     },
     [dispatch]
   );
 
   const changeStatus = useCallback(
     (taskId: string, status: TaskStatuses, todolistId: string) => {
-      dispatch(tasksThunk.updateTask({ taskId, domainModel: { status }, todolistId }));
+      dispatch(tasksThunks.updateTask({ taskId, domainModel: { status }, todolistId }));
     },
     [dispatch]
   );
 
   const changeTaskTitle = useCallback(
     (taskId: string, title: string, todolistId: string) => {
-      dispatch(tasksThunk.updateTask({ taskId, domainModel: { title }, todolistId }));
+      dispatch(tasksThunks.updateTask({ taskId, domainModel: { title }, todolistId }));
     },
     [dispatch]
   );
