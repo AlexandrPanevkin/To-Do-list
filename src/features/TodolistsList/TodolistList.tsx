@@ -3,14 +3,7 @@ import { Grid, Paper } from "@mui/material";
 import { AddItemForm } from "common/components/AddItemForm/AddItemForm";
 import { Todolist } from "./Todolist/Todolist";
 import { useAppSelector } from "app/store";
-import {
-  addTodolistTC,
-  FilterValuesType,
-  removeTodolistTC,
-  todolistsActions,
-  todolistsThunks,
-  updateTodolistTitleTC,
-} from "./todolists-reducer";
+import { FilterValuesType, todolistsActions, todolistsThunks, updateTodolistTitleTC } from "./todolists-reducer";
 import { Navigate } from "react-router-dom";
 import { selectIsLoggedIn } from "features/auth/auth.selectors";
 import { selectTodolists } from "features/TodolistsList/todolists.selectors";
@@ -73,7 +66,7 @@ export const TodolistList = () => {
 
   const removeTodolist = useCallback(
     (id: string) => {
-      dispatch(removeTodolistTC(id));
+      dispatch(todolistsThunks.removeTodolist(id));
     },
     [dispatch]
   );
@@ -87,7 +80,7 @@ export const TodolistList = () => {
 
   const addTodolist = useCallback(
     (title: string) => {
-      dispatch(addTodolistTC(title));
+      dispatch(todolistsThunks.addTodolist(title));
     },
     [dispatch]
   );
