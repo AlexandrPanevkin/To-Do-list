@@ -5,10 +5,10 @@ import { Todolist } from "./Todolist/Todolist";
 import { useAppSelector } from "app/store";
 import {
   addTodolistTC,
-  fetchTodolists,
   FilterValuesType,
   removeTodolistTC,
   todolistsActions,
+  todolistsThunks,
   updateTodolistTitleTC,
 } from "./todolists-reducer";
 import { Navigate } from "react-router-dom";
@@ -33,7 +33,7 @@ export const TodolistList = () => {
 
   useEffect(() => {
     if (!isLoggedIn) return;
-    dispatch(fetchTodolists());
+    dispatch(todolistsThunks.fetchTodolists());
   }, []);
 
   const removeTask = useCallback(

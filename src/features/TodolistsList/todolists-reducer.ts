@@ -6,8 +6,9 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { createAppAsyncThunk, handleServerAppError, handleServerNetworkError } from "common/utils";
 import { TodolistType } from "features/TodolistsList/todolists.types";
 import { clearTasksAndTodolists } from "common/actions";
+import { ResultCode } from "common/enums";
 
-export const fetchTodolists = createAppAsyncThunk<{ todolists: TodolistType[] }, void>(
+const fetchTodolists = createAppAsyncThunk<{ todolists: TodolistType[] }, void>(
   "todolists/fetchTodolists",
   async (_, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI;
@@ -23,23 +24,28 @@ export const fetchTodolists = createAppAsyncThunk<{ todolists: TodolistType[] },
   }
 );
 
-// export const getTodolistsTC = () => (dispatch: any) => {
-//   todolistsApi
-//       .getTodolists()
-//       .then((res) => {
-//         // dispatch(todolistsActions.setTodolists({ todolists: res.data }));
-//
-//         return res.data;
-//       })
-//       .then((res) => {
-//         res.forEach((tl) => {
-//           dispatch(tasksThunk.fetchTasks(tl.id));
-//         });
-//       });
-// };
+const addTodolist = createAppAsyncThunk<{ todolist: TodolistType }, string>(
+  "todolists/addTodolist",
+  async (title, thunkAPI) => {
+    const { dispatch, rejectWithValue } = thunkAPI;
+    try {
+      dispatch(appActions.setAppStatus({ status: "loading" }));
+      const res = await todolistsApi.createTodolist(title);
+      if (res.data.resultCode === ResultCode.Success) {
+        dispatch(appActions.setAppStatus({ status: "succeeded" }));
+        return { todolist: res.data.data.item };
+      } else {
+        handleServerAppError(res.data, dispatch);
+        return rejectWithValue(null);
+      }
+    } catch (e) {
+      handleServerNetworkError(e, dispatch);
+      return rejectWithValue(null);
+    }
+  }
+);
 
 export const addTodolistTC = (title: string) => (dispatch: Dispatch) => {
-  dispatch(appActions.setAppStatus({ status: "loading" }));
   todolistsApi.createTodolist(title).then((res) => {
     if (res.data.resultCode === 0) {
       dispatch(todolistsActions.addTodolist({ todolist: res.data.data.item }));
@@ -107,6 +113,14 @@ const slice = createSlice({
       .addCase(fetchTodolists.fulfilled, (state, action) => {
         return action.payload.todolists.map((td) => ({ ...td, filter: "all", entityStatus: "idle" }));
       })
+      .addCase(addTodolist.fulfilled, (state, action) => {
+        const newTodolist: TodolistDomainType = {
+          ...action.payload.todolist,
+          filter: "all",
+          entityStatus: "idle",
+        };
+        state.unshift(newTodolist);
+      })
       .addCase(clearTasksAndTodolists.type, () => {
         return [];
       });
@@ -117,6 +131,7 @@ export const todolistsReducer = slice.reducer;
 export const todolistsActions = slice.actions;
 export const todolistsThunks = {
   fetchTodolists,
+  addTodolist,
 };
 
 // types
