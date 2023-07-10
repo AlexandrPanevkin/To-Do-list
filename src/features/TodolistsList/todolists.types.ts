@@ -1,5 +1,6 @@
 import { TaskPriorities, TaskStatuses } from "common/enums";
 import { UpdateDomainTaskModelType } from "features/TodolistsList/tasks-reducer";
+import { RequestStatusType } from "app/app-reducer";
 
 export type TodolistType = {
   id: string;
@@ -52,4 +53,16 @@ export type UpdateTaskArgType = {
   taskId: string;
   domainModel: UpdateDomainTaskModelType;
   todolistId: string;
+};
+
+export type UpdateTodolistTitleArgType = {
+  id: string;
+  title: string;
+};
+
+export type FilterValuesType = "all" | "active" | "completed";
+
+export type TodolistDomainType = TodolistType & {
+  filter: FilterValuesType;
+  entityStatus: RequestStatusType;
 };

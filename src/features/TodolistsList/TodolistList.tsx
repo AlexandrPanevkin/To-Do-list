@@ -3,14 +3,14 @@ import { Grid, Paper } from "@mui/material";
 import { AddItemForm } from "common/components/AddItemForm/AddItemForm";
 import { Todolist } from "./Todolist/Todolist";
 import { useAppSelector } from "app/store";
-import { FilterValuesType, todolistsActions, todolistsThunks, updateTodolistTitleTC } from "./todolists-reducer";
+import { todolistsActions, todolistsThunks } from "./todolists-reducer";
 import { Navigate } from "react-router-dom";
 import { selectIsLoggedIn } from "features/auth/auth.selectors";
 import { selectTodolists } from "features/TodolistsList/todolists.selectors";
 import { selectTasks } from "features/TodolistsList/tasks.selectors";
 import { TaskStatuses } from "common/enums";
 import { useAppDispatch } from "common/hooks";
-import { TaskType } from "features/TodolistsList/todolists.types";
+import { FilterValuesType, TaskType } from "features/TodolistsList/todolists.types";
 import { tasksThunks } from "features/TodolistsList/tasks-reducer";
 
 export type TasksStateType = {
@@ -73,7 +73,7 @@ export const TodolistList = () => {
 
   const changeTodolistTitle = useCallback(
     (id: string, title: string) => {
-      dispatch(updateTodolistTitleTC(id, title));
+      dispatch(todolistsThunks.changeTodolistTitle({ id, title }));
     },
     [dispatch]
   );
