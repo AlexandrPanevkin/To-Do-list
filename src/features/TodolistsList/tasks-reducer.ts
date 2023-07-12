@@ -152,7 +152,6 @@ const slice = createSlice({
 });
 
 export const tasksReducer = slice.reducer;
-export const tasksActions = slice.actions;
 export const tasksThunks = { fetchTasks, addTask, removeTask, updateTask };
 
 //types

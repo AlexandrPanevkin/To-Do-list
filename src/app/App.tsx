@@ -14,12 +14,12 @@ import { useAppSelector } from "./store";
 import { ErrorSnackbar } from "common/components/ErrorSnackbar/ErrorSnackbar";
 import { Login } from "features/auth/Login";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { logoutTC } from "features/auth/auth-reducer";
 import { CircularProgress } from "@mui/material";
 import { initializeAppTC } from "app/app-reducer";
 import { selectIsInitialized, selectStatus } from "app/app.selectors";
 import { selectIsLoggedIn } from "features/auth/auth.selectors";
 import { useAppDispatch } from "common/hooks";
+import { authThunks } from "features/auth/auth-reducer";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -29,7 +29,7 @@ function App() {
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
 
   const logoutHandler = () => {
-    dispatch(logoutTC());
+    dispatch(authThunks.logout());
   };
 
   useEffect(() => {
