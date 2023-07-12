@@ -15,7 +15,6 @@ import { ErrorSnackbar } from "common/components/ErrorSnackbar/ErrorSnackbar";
 import { Login } from "features/auth/Login";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
-import { initializeAppTC } from "app/app-reducer";
 import { selectIsInitialized, selectStatus } from "app/app.selectors";
 import { selectIsLoggedIn } from "features/auth/auth.selectors";
 import { useAppDispatch } from "common/hooks";
@@ -33,7 +32,7 @@ function App() {
   };
 
   useEffect(() => {
-    dispatch(initializeAppTC());
+    dispatch(authThunks.initializeApp());
   }, []);
 
   if (!isInitialized) {
