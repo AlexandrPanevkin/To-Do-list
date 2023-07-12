@@ -117,7 +117,7 @@ const slice = createSlice({
         state.unshift(newTodolist);
       })
       .addCase(removeTodolist.fulfilled, (state, action) => {
-        const index = state.findIndex((t) => t.id === action.payload.id);
+        const index = state.findIndex((todo) => todo.id === action.payload.id);
         if (index !== -1) state.splice(index, 1);
       })
       .addCase(changeTodolistTitle.fulfilled, (state, action) => {
