@@ -12,6 +12,7 @@ import { TaskStatuses } from "common/enums";
 import { useAppDispatch } from "common/hooks";
 import { FilterValuesType, TaskType } from "features/TodolistsList/todolists.types";
 import { tasksThunks } from "features/TodolistsList/tasks-reducer";
+import { useActions } from "common/hooks/useActions";
 
 export type TasksStateType = {
   [key: string]: Array<TaskType>;
@@ -22,65 +23,73 @@ export const TodolistList = () => {
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
   const tasks = useAppSelector(selectTasks);
 
+  const {
+    fetchTodolists,
+    removeTodolist,
+    changeTodolistTitle: changeTodolistTitleThunk,
+    addTodolist,
+  } = useActions(todolistsThunks);
+  const { removeTask, addTask, updateTask } = useActions(tasksThunks);
+  const { changeTodolistFilter } = useActions(todolistsActions);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (!isLoggedIn) return;
-    dispatch(todolistsThunks.fetchTodolists());
+    fetchTodolists();
   }, []);
 
-  const removeTask = useCallback(
+  const deleteTask = useCallback(
     (taskId: string, todolistId: string) => {
-      dispatch(tasksThunks.removeTask({ taskId, todolistId }));
+      removeTask({ taskId, todolistId });
     },
     [dispatch]
   );
 
-  const addTask = useCallback(
+  const createTask = useCallback(
     (title: string, todolistId: string) => {
-      dispatch(tasksThunks.addTask({ todolistId, title }));
+      addTask({ todolistId, title });
     },
     [dispatch]
   );
 
   const changeStatus = useCallback(
     (taskId: string, status: TaskStatuses, todolistId: string) => {
-      dispatch(tasksThunks.updateTask({ taskId, domainModel: { status }, todolistId }));
+      updateTask({ taskId, domainModel: { status }, todolistId });
     },
     [dispatch]
   );
 
   const changeTaskTitle = useCallback(
     (taskId: string, title: string, todolistId: string) => {
-      dispatch(tasksThunks.updateTask({ taskId, domainModel: { title }, todolistId }));
+      updateTask({ taskId, domainModel: { title }, todolistId });
     },
     [dispatch]
   );
 
   const changeFilter = useCallback(
     (id: string, filter: FilterValuesType) => {
-      dispatch(todolistsActions.changeTodolistFilter({ id, filter }));
+      changeTodolistFilter({ id, filter });
     },
     [dispatch]
   );
 
-  const removeTodolist = useCallback(
+  const deleteTodolist = useCallback(
     (id: string) => {
-      dispatch(todolistsThunks.removeTodolist(id));
+      removeTodolist(id);
     },
     [dispatch]
   );
 
   const changeTodolistTitle = useCallback(
     (id: string, title: string) => {
-      dispatch(todolistsThunks.changeTodolistTitle({ id, title }));
+      changeTodolistTitleThunk({ id, title });
     },
     [dispatch]
   );
 
-  const addTodolist = useCallback(
+  const createTodolist = useCallback(
     (title: string) => {
-      dispatch(todolistsThunks.addTodolist(title));
+      addTodolist(title);
     },
     [dispatch]
   );
@@ -91,7 +100,7 @@ export const TodolistList = () => {
   return (
     <div>
       <Grid container style={{ padding: "20px" }}>
-        <AddItemForm addItem={addTodolist} />
+        <AddItemForm addItem={createTodolist} />
       </Grid>
       <Grid container spacing={3}>
         {todolists.map((tl) => {
@@ -104,12 +113,12 @@ export const TodolistList = () => {
                   entityStatus={tl.entityStatus}
                   title={tl.title}
                   tasks={tasks[tl.id]}
-                  removeTask={removeTask}
+                  removeTask={deleteTask}
                   changeFilter={changeFilter}
-                  addTask={addTask}
+                  addTask={createTask}
                   changeTaskStatus={changeStatus}
                   filter={tl.filter}
-                  removeTodolist={removeTodolist}
+                  removeTodolist={deleteTodolist}
                   changeTaskTitle={changeTaskTitle}
                   changeTodolistTitle={changeTodolistTitle}
                 />

@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { TodolistList } from "features/TodolistsList/TodolistList";
-
 import "./App.css";
 import AppBar from "@mui/material/AppBar/AppBar";
 import Button from "@mui/material/Button";
@@ -17,22 +16,22 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import { selectIsInitialized, selectStatus } from "app/app.selectors";
 import { selectIsLoggedIn } from "features/auth/auth.selectors";
-import { useAppDispatch } from "common/hooks";
 import { authThunks } from "features/auth/auth-reducer";
+import { useActions } from "common/hooks/useActions";
 
 function App() {
-  const dispatch = useAppDispatch();
-
   const status = useAppSelector(selectStatus);
   const isInitialized = useAppSelector(selectIsInitialized);
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
 
+  const { initializeApp, logout } = useActions(authThunks);
+
   const logoutHandler = () => {
-    dispatch(authThunks.logout());
+    logout();
   };
 
   useEffect(() => {
-    dispatch(authThunks.initializeApp());
+    initializeApp();
   }, []);
 
   if (!isInitialized) {
