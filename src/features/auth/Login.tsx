@@ -7,11 +7,13 @@ import FormGroup from "@mui/material/FormGroup";
 import FormLabel from "@mui/material/FormLabel";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { useFormik } from "formik";
+import { FormikHelpers, useFormik } from "formik";
 import { useAppSelector } from "app/store";
 import { Navigate } from "react-router-dom";
 import { useAppDispatch } from "common/hooks";
 import { authThunks } from "features/auth/auth-reducer";
+import { LoginParamsType } from "features/auth/auth.api";
+import { ResponseType } from "common/types";
 
 type FormikErrorType = {
   email?: string;
@@ -20,16 +22,16 @@ type FormikErrorType = {
 };
 
 const validate = (values: any) => {
-  if (!values.email) {
-    return {
-      email: "Email is required",
-    };
-  }
-  if (!values.password) {
-    return {
-      password: "Password is required",
-    };
-  }
+  // if (!values.email) {
+  //   return {
+  //     email: "Email is required",
+  //   };
+  // }
+  // if (!values.password) {
+  //   return {
+  //     password: "Password is required",
+  //   };
+  // }
 };
 
 export const Login = () => {
@@ -43,9 +45,12 @@ export const Login = () => {
       rememberMe: false,
     },
     validate,
-    onSubmit: (values) => {
-      dispatch(authThunks.login(values));
-      formik.resetForm();
+    onSubmit: (values, formikHelpers: FormikHelpers<LoginParamsType>) => {
+      dispatch(authThunks.login(values))
+        .unwrap()
+        .catch((reason: ResponseType) => {
+          reason.fieldsErrors.forEach((error) => formikHelpers.setFieldError(error.field, error.error));
+        });
     },
   });
 
