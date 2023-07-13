@@ -49,7 +49,7 @@ export const Login = () => {
       dispatch(authThunks.login(values))
         .unwrap()
         .catch((reason: ResponseType) => {
-          reason.fieldsErrors.forEach((error) => formikHelpers.setFieldError(error.field, error.error));
+          reason.fieldsErrors?.forEach((error) => formikHelpers.setFieldError(error.field, error.error));
         });
     },
   });
