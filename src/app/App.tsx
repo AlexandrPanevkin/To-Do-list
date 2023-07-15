@@ -27,11 +27,11 @@ function App() {
   const { initializeApp, logout } = useActions(authThunks);
 
   const logoutHandler = () => {
-    logout();
+    logout({});
   };
 
   useEffect(() => {
-    initializeApp();
+    initializeApp({});
   }, []);
 
   if (!isInitialized) {

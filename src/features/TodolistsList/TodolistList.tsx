@@ -31,68 +31,43 @@ export const TodolistList = () => {
   } = useActions(todolistsThunks);
   const { removeTask, addTask, updateTask } = useActions(tasksThunks);
   const { changeTodolistFilter } = useActions(todolistsActions);
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (!isLoggedIn) return;
-    fetchTodolists();
+    fetchTodolists({});
   }, []);
 
-  const deleteTask = useCallback(
-    (taskId: string, todolistId: string) => {
-      removeTask({ taskId, todolistId });
-    },
-    [dispatch]
-  );
+  const deleteTask = useCallback((taskId: string, todolistId: string) => {
+    removeTask({ taskId, todolistId });
+  }, []);
 
-  const createTask = useCallback(
-    (title: string, todolistId: string) => {
-      addTask({ todolistId, title });
-    },
-    [dispatch]
-  );
+  const createTask = useCallback((title: string, todolistId: string) => {
+    addTask({ todolistId, title });
+  }, []);
 
-  const changeStatus = useCallback(
-    (taskId: string, status: TaskStatuses, todolistId: string) => {
-      updateTask({ taskId, domainModel: { status }, todolistId });
-    },
-    [dispatch]
-  );
+  const changeStatus = useCallback((taskId: string, status: TaskStatuses, todolistId: string) => {
+    updateTask({ taskId, domainModel: { status }, todolistId });
+  }, []);
 
-  const changeTaskTitle = useCallback(
-    (taskId: string, title: string, todolistId: string) => {
-      updateTask({ taskId, domainModel: { title }, todolistId });
-    },
-    [dispatch]
-  );
+  const changeTaskTitle = useCallback((taskId: string, title: string, todolistId: string) => {
+    updateTask({ taskId, domainModel: { title }, todolistId });
+  }, []);
 
-  const changeFilter = useCallback(
-    (id: string, filter: FilterValuesType) => {
-      changeTodolistFilter({ id, filter });
-    },
-    [dispatch]
-  );
+  const changeFilter = useCallback((id: string, filter: FilterValuesType) => {
+    changeTodolistFilter({ id, filter });
+  }, []);
 
-  const deleteTodolist = useCallback(
-    (id: string) => {
-      removeTodolist(id);
-    },
-    [dispatch]
-  );
+  const deleteTodolist = useCallback((id: string) => {
+    removeTodolist(id);
+  }, []);
 
-  const changeTodolistTitle = useCallback(
-    (id: string, title: string) => {
-      changeTodolistTitleThunk({ id, title });
-    },
-    [dispatch]
-  );
+  const changeTodolistTitle = useCallback((id: string, title: string) => {
+    changeTodolistTitleThunk({ id, title });
+  }, []);
 
-  const createTodolist = useCallback(
-    (title: string) => {
-      addTodolist(title);
-    },
-    [dispatch]
-  );
+  const createTodolist = useCallback((title: string) => {
+    addTodolist(title);
+  }, []);
 
   if (!isLoggedIn) {
     return <Navigate to={"/login"} />;

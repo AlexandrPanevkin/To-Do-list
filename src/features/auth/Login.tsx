@@ -14,6 +14,7 @@ import { useAppDispatch } from "common/hooks";
 import { authThunks } from "features/auth/auth-reducer";
 import { LoginParamsType } from "features/auth/auth.api";
 import { ResponseType } from "common/types";
+import { useActions } from "common/hooks/useActions";
 
 type FormikErrorType = {
   email?: string;
@@ -39,7 +40,7 @@ const validate = (values: any) => {
 };
 
 export const Login = () => {
-  const dispatch = useAppDispatch();
+  const { login } = useActions(authThunks);
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
 
   const formik = useFormik({
@@ -50,7 +51,7 @@ export const Login = () => {
     },
     validate,
     onSubmit: (values, formikHelpers: FormikHelpers<LoginParamsType>) => {
-      dispatch(authThunks.login(values))
+      login(values)
         .unwrap()
         .catch((reason: ResponseType) => {
           reason.fieldsErrors?.forEach((error) => formikHelpers.setFieldError(error.field, error.error));
@@ -90,7 +91,12 @@ export const Login = () => {
                 label={"Remember me"}
                 control={<Checkbox checked={formik.values.rememberMe} {...formik.getFieldProps("rememberMe")} />}
               />
-              <Button type={"submit"} variant={"contained"} color={"primary"}>
+              <Button
+                type={"submit"}
+                variant={"contained"}
+                color={"primary"}
+                disabled={!(formik.isValid && formik.dirty)}
+              >
                 Login
               </Button>
             </FormGroup>
