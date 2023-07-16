@@ -1,5 +1,5 @@
 import { instance } from "common/api/comon.api";
-import { TodolistType } from "features/TodolistsList/todolists/todolists.types";
+import { TodolistType } from "features/TodolistsList/todolists/api/todolists.api.types";
 import { ResponseType } from "common/types/common.types";
 
 export const todolistsApi = {

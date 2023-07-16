@@ -1,7 +1,7 @@
 import { TasksStateType } from "features/TodolistsList/TodolistList";
 import { appActions } from "app/app-reducer";
 import { createSlice } from "@reduxjs/toolkit";
-import { todolistsThunks } from "features/TodolistsList/todolists/todolists-reducer";
+import { todolistsThunks } from "features/TodolistsList/todolists/model/todolists-reducer";
 import { clearTasksAndTodolists } from "common/actions/common.actions";
 import { createAppAsyncThunk, handleServerAppError } from "common/utils";
 import { ResultCode, TaskPriorities, TaskStatuses } from "common/enums";

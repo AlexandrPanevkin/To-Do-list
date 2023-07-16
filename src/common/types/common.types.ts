@@ -9,3 +9,9 @@ export type ResponseType<D = {}> = {
   data: D;
   fieldsErrors: FieldErrorType[];
 };
+
+export type UserType = {
+  id: string;
+  email: string;
+  login: string;
+};
