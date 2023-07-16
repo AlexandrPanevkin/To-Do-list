@@ -8,7 +8,7 @@ import {
   TodolistDomainType,
   TodolistType,
   UpdateTodolistTitleArgType,
-} from "features/TodolistsList/todolists.types";
+} from "features/TodolistsList/todolists/todolists.types";
 import { clearTasksAndTodolists } from "common/actions";
 import { ResultCode } from "common/enums";
 import { thunkTryCatch } from "common/utils/thunk-try-catch";

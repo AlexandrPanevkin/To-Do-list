@@ -1,5 +1,5 @@
 import { TaskPriorities, TaskStatuses } from "common/enums";
-import { UpdateDomainTaskModelType } from "features/TodolistsList/tasks-reducer";
+import { UpdateDomainTaskModelType } from "features/TodolistsList/tasks/tasks-reducer";
 import { RequestStatusType } from "app/app-reducer";
 
 export type TodolistType = {

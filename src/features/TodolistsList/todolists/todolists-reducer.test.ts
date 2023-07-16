@@ -1,7 +1,11 @@
-import { todolistsActions, todolistsReducer, todolistsThunks } from "./todolists-reducer";
+import {
+  todolistsActions,
+  todolistsReducer,
+  todolistsThunks,
+} from "features/TodolistsList/todolists/todolists-reducer";
 import { v1 } from "uuid";
 import { RequestStatusType } from "app/app-reducer";
-import { FilterValuesType, TodolistDomainType, TodolistType } from "features/TodolistsList/todolists.types";
+import { FilterValuesType, TodolistDomainType, TodolistType } from "features/TodolistsList/todolists/todolists.types";
 
 let todolistId1: string;
 let todolistId2: string;

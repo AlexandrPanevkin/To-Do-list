@@ -10,17 +10,12 @@ import Button from "@mui/material/Button";
 import { FormikHelpers, useFormik } from "formik";
 import { useAppSelector } from "app/store";
 import { Navigate } from "react-router-dom";
-import { useAppDispatch } from "common/hooks";
 import { authThunks } from "features/auth/auth-reducer";
 import { LoginParamsType } from "features/auth/auth.api";
 import { ResponseType } from "common/types";
 import { useActions } from "common/hooks/useActions";
 
-type FormikErrorType = {
-  email?: string;
-  password?: string;
-  rememberMe?: boolean;
-};
+type FormikErrorType = Partial<Omit<LoginParamsType, "captcha">>;
 
 const validate = (values: any) => {
   const errors: FormikErrorType = {};

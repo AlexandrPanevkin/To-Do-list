@@ -4,11 +4,11 @@ import { EditableSpan } from "common/components/EditableSpan/EditableSpan";
 import IconButton from "@mui/material/IconButton/IconButton";
 import { Delete } from "@mui/icons-material";
 import { Button } from "@mui/material";
-import { Task } from "./Task/Task";
+import { Task } from "features/TodolistsList/todolists/Todolist/Task/Task";
 import { RequestStatusType } from "app/app-reducer";
 import { TaskStatuses } from "common/enums";
-import { FilterValuesType, TaskType } from "features/TodolistsList/todolists.types";
-import { tasksThunks } from "features/TodolistsList/tasks-reducer";
+import { FilterValuesType, TaskType } from "features/TodolistsList/todolists/todolists.types";
+import { tasksThunks } from "features/TodolistsList/tasks/tasks-reducer";
 import { useAppDispatch } from "common/hooks";
 
 type PropsType = {
