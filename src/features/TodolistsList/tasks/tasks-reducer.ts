@@ -5,14 +5,14 @@ import { todolistsThunks } from "features/TodolistsList/todolists/todolists-redu
 import { clearTasksAndTodolists } from "common/actions/common.actions";
 import { createAppAsyncThunk, handleServerAppError } from "common/utils";
 import { ResultCode, TaskPriorities, TaskStatuses } from "common/enums";
+import { thunkTryCatch } from "common/utils/thunk-try-catch";
+import { tasksApi } from "features/TodolistsList/tasks/api/tasks.api";
 import {
   RemoveTaskArgType,
   TaskType,
   UpdateTaskArgType,
   UpdateTaskModelType,
-} from "features/TodolistsList/todolists/todolists.types";
-import { thunkTryCatch } from "common/utils/thunk-try-catch";
-import { tasksApi } from "features/TodolistsList/tasks/api/tasks.api";
+} from "features/TodolistsList/tasks/api/tasks.api.types";
 
 const fetchTasks = createAppAsyncThunk<{ tasks: TaskType[]; todolistId: string }, string>(
   "tasks/fetchTasks",

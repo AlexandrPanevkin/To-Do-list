@@ -4,7 +4,7 @@ import { Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import Checkbox from "@mui/material/Checkbox";
 import { TaskStatuses } from "common/enums";
-import { TaskType } from "features/TodolistsList/todolists/todolists.types";
+import { TaskType } from "features/TodolistsList/tasks/api/tasks.api.types";
 
 type TaskPropsType = {
   task: TaskType;

@@ -9,10 +9,10 @@ import { selectIsLoggedIn } from "features/auth/auth.selectors";
 import { selectTodolists } from "features/TodolistsList/todolists/todolists.selectors";
 import { selectTasks } from "features/TodolistsList/tasks/tasks.selectors";
 import { TaskStatuses } from "common/enums";
-import { useAppDispatch } from "common/hooks";
-import { FilterValuesType, TaskType } from "features/TodolistsList/todolists/todolists.types";
+import { FilterValuesType } from "features/TodolistsList/todolists/todolists.types";
 import { tasksThunks } from "features/TodolistsList/tasks/tasks-reducer";
 import { useActions } from "common/hooks/useActions";
+import { TaskType } from "features/TodolistsList/tasks/api/tasks.api.types";
 
 export type TasksStateType = {
   [key: string]: Array<TaskType>;

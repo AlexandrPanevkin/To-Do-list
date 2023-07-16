@@ -7,9 +7,10 @@ import { Button } from "@mui/material";
 import { Task } from "features/TodolistsList/todolists/Todolist/Task/Task";
 import { RequestStatusType } from "app/app-reducer";
 import { TaskStatuses } from "common/enums";
-import { FilterValuesType, TaskType } from "features/TodolistsList/todolists/todolists.types";
+import { FilterValuesType } from "features/TodolistsList/todolists/todolists.types";
 import { tasksThunks } from "features/TodolistsList/tasks/tasks-reducer";
 import { useAppDispatch } from "common/hooks";
+import { TaskType } from "features/TodolistsList/tasks/api/tasks.api.types";
 
 type PropsType = {
   todolistId: string;
