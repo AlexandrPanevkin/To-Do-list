@@ -29,7 +29,7 @@ export const TodolistList = () => {
     changeTodolistTitle: changeTodolistTitleThunk,
     addTodolist,
   } = useActions(todolistsThunks);
-  const { removeTask, addTask, updateTask } = useActions(tasksThunks);
+  const { addTask } = useActions(tasksThunks);
   const { changeTodolistFilter } = useActions(todolistsActions);
 
   useEffect(() => {
@@ -37,20 +37,8 @@ export const TodolistList = () => {
     fetchTodolists({});
   }, []);
 
-  const deleteTask = useCallback((taskId: string, todolistId: string) => {
-    removeTask({ taskId, todolistId });
-  }, []);
-
   const createTask = useCallback((title: string, todolistId: string) => {
     addTask({ todolistId, title });
-  }, []);
-
-  const changeStatus = useCallback((taskId: string, status: TaskStatuses, todolistId: string) => {
-    updateTask({ taskId, domainModel: { status }, todolistId });
-  }, []);
-
-  const changeTaskTitle = useCallback((taskId: string, title: string, todolistId: string) => {
-    updateTask({ taskId, domainModel: { title }, todolistId });
   }, []);
 
   const changeFilter = useCallback((id: string, filter: FilterValuesType) => {
@@ -88,13 +76,10 @@ export const TodolistList = () => {
                   entityStatus={tl.entityStatus}
                   title={tl.title}
                   tasks={tasks[tl.id]}
-                  removeTask={deleteTask}
                   changeFilter={changeFilter}
                   addTask={createTask}
-                  changeTaskStatus={changeStatus}
                   filter={tl.filter}
                   removeTodolist={deleteTodolist}
-                  changeTaskTitle={changeTaskTitle}
                   changeTodolistTitle={changeTodolistTitle}
                 />
               </Paper>

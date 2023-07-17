@@ -16,14 +16,11 @@ type PropsType = {
   todolistId: string;
   title: string;
   tasks: Array<TaskType>;
-  removeTask: (taskId: string, todolistId: string) => void;
   changeFilter: (todolistId: string, value: FilterValuesType) => void;
   addTask: (title: string, todolistId: string) => void;
-  changeTaskStatus: (id: string, status: TaskStatuses, todolistId: string) => void;
   removeTodolist: (id: string) => void;
   changeTodolistTitle: (id: string, newTitle: string) => void;
   filter: FilterValuesType;
-  changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void;
   entityStatus: RequestStatusType;
 };
 
@@ -48,20 +45,6 @@ export const Todolist = memo((props: PropsType) => {
       props.addTask(title, props.todolistId);
     },
     [props.addTask, props.todolistId]
-  );
-
-  const changeTaskTitle = useCallback(
-    (taskId: string, newValue: string) => {
-      props.changeTaskTitle(taskId, newValue, props.todolistId);
-    },
-    [props.changeTaskTitle, props.todolistId]
-  );
-
-  const removeTask = useCallback(
-    (taskId: string) => {
-      props.removeTask(taskId, props.todolistId);
-    },
-    [props.removeTask, props.todolistId]
   );
 
   const onAllClickHandler = useCallback(
@@ -96,16 +79,7 @@ export const Todolist = memo((props: PropsType) => {
       <AddItemForm addItem={addTask} />
       <div>
         {tasksForTodolist?.map((t) => {
-          return (
-            <Task
-              key={t.id}
-              task={t}
-              todolistId={props.todolistId}
-              removeTask={removeTask}
-              changeTaskTitle={changeTaskTitle}
-              changeTaskStatus={props.changeTaskStatus}
-            />
-          );
+          return <Task key={t.id} task={t} todolistId={props.todolistId} />;
         })}
       </div>
       <div>
