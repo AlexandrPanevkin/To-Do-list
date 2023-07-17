@@ -4,13 +4,13 @@ import { EditableSpan } from "common/components/EditableSpan/editableSpan";
 import IconButton from "@mui/material/IconButton/IconButton";
 import { Delete } from "@mui/icons-material";
 import { Button } from "@mui/material";
-import { Task } from "features/TodolistsList/tasks/ui/Task/Task";
+import { Task } from "features/todolistsList/tasks/ui/task/task";
 import { RequestStatusType } from "app/app.reducer";
 import { TaskStatuses } from "common/enums";
-import { FilterValuesType } from "features/TodolistsList/todolists/api/todolists.api.types";
-import { tasksThunks } from "features/TodolistsList/tasks/model/tasks.reducer";
+import { FilterValuesType } from "features/todolistsList/todolists/api/todolists.api.types";
+import { tasksThunks } from "features/todolistsList/tasks/model/tasks.reducer";
 import { useAppDispatch } from "common/hooks";
-import { TaskType } from "features/TodolistsList/tasks/api/tasks.api.types";
+import { TaskType } from "features/todolistsList/tasks/api/tasks.api.types";
 
 type PropsType = {
   todolistId: string;

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { TodolistList } from "features/TodolistsList/todolist-list";
+import { TodolistList } from "features/todolistsList/todolist-list";
 import "app/app.css";
 import AppBar from "@mui/material/AppBar/AppBar";
 import Button from "@mui/material/Button";

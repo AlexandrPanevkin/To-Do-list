@@ -1,18 +1,18 @@
 import React, { useCallback, useEffect } from "react";
 import { Grid, Paper } from "@mui/material";
 import { AddItemForm } from "common/components/AddItemForm/addItemForm";
-import { Todolist } from "features/TodolistsList/todolists/ui/Todolist/todolist";
+import { Todolist } from "features/todolistsList/todolists/ui/todolist/todolist";
 import { useAppSelector } from "app/store";
-import { todolistsActions, todolistsThunks } from "features/TodolistsList/todolists/model/todolists.reducer";
+import { todolistsActions, todolistsThunks } from "features/todolistsList/todolists/model/todolists.reducer";
 import { Navigate } from "react-router-dom";
 import { selectIsLoggedIn } from "features/auth/auth.selectors";
-import { selectTodolists } from "features/TodolistsList/todolists/model/todolists.selectors";
-import { selectTasks } from "features/TodolistsList/tasks/model/tasks.selectors";
+import { selectTodolists } from "features/todolistsList/todolists/model/todolists.selectors";
+import { selectTasks } from "features/todolistsList/tasks/model/tasks.selectors";
 import { TaskStatuses } from "common/enums";
-import { FilterValuesType } from "features/TodolistsList/todolists/api/todolists.api.types";
-import { tasksThunks } from "features/TodolistsList/tasks/model/tasks.reducer";
+import { FilterValuesType } from "features/todolistsList/todolists/api/todolists.api.types";
+import { tasksThunks } from "features/todolistsList/tasks/model/tasks.reducer";
 import { useActions } from "common/hooks/useActions";
-import { TaskType } from "features/TodolistsList/tasks/api/tasks.api.types";
+import { TaskType } from "features/todolistsList/tasks/api/tasks.api.types";
 
 export type TasksStateType = {
   [key: string]: Array<TaskType>;

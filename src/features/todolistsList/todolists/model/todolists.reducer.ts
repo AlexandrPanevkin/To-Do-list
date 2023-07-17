@@ -1,4 +1,4 @@
-import { todolistsApi } from "features/TodolistsList/todolists/api/todolists.api";
+import { todolistsApi } from "features/todolistsList/todolists/api/todolists.api";
 
 import { RequestStatusType } from "app/app.reducer";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
@@ -8,7 +8,7 @@ import {
   TodolistDomainType,
   TodolistType,
   UpdateTodolistTitleArgType,
-} from "features/TodolistsList/todolists/api/todolists.api.types";
+} from "features/todolistsList/todolists/api/todolists.api.types";
 import { clearTasksAndTodolists } from "common/actions";
 import { ResultCode } from "common/enums";
 import { thunkTryCatch } from "common/utils/thunk-try-catch";

@@ -1,5 +1,5 @@
-import { tasksReducer } from "features/TodolistsList/tasks/model/tasks.reducer";
-import { todolistsReducer } from "features/TodolistsList/todolists/model/todolists.reducer";
+import { tasksReducer } from "features/todolistsList/tasks/model/tasks.reducer";
+import { todolistsReducer } from "features/todolistsList/todolists/model/todolists.reducer";
 import { AnyAction, combineReducers } from "redux";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { ThunkDispatch } from "redux-thunk";
