@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { appActions } from "app/app-reducer";
+import { appActions } from "app/app.reducer";
 import { clearTasksAndTodolists } from "common/actions/common.actions";
 import { handleServerNetworkError } from "common/utils/handle-server-network-error";
 import { authAPI, LoginParamsType } from "features/auth/auth.api";

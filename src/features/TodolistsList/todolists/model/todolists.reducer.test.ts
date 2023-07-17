@@ -2,9 +2,9 @@ import {
   todolistsActions,
   todolistsReducer,
   todolistsThunks,
-} from "features/TodolistsList/todolists/model/todolists-reducer";
+} from "features/TodolistsList/todolists/model/todolists.reducer";
 import { v1 } from "uuid";
-import { RequestStatusType } from "app/app-reducer";
+import { RequestStatusType } from "app/app.reducer";
 import {
   FilterValuesType,
   TodolistDomainType,

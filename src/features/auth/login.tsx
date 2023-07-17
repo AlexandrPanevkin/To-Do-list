@@ -10,7 +10,7 @@ import Button from "@mui/material/Button";
 import { FormikHelpers, useFormik } from "formik";
 import { useAppSelector } from "app/store";
 import { Navigate } from "react-router-dom";
-import { authThunks } from "features/auth/auth-reducer";
+import { authThunks } from "features/auth/auth.reducer";
 import { LoginParamsType } from "features/auth/auth.api";
 import { ResponseType } from "common/types";
 import { useActions } from "common/hooks/useActions";

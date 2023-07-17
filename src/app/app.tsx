@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { TodolistList } from "features/TodolistsList/TodolistList";
-import "./App.css";
+import { TodolistList } from "features/TodolistsList/todolist-list";
+import "app/app.css";
 import AppBar from "@mui/material/AppBar/AppBar";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
@@ -10,13 +10,13 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { Menu } from "@mui/icons-material";
 import { useAppSelector } from "./store";
-import { ErrorSnackbar } from "common/components/ErrorSnackbar/ErrorSnackbar";
-import { Login } from "features/auth/Login";
+import { ErrorSnackbar } from "common/components/ErrorSnackbar/errorSnackbar";
+import { Login } from "features/auth/login";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import { selectIsInitialized, selectStatus } from "app/app.selectors";
 import { selectIsLoggedIn } from "features/auth/auth.selectors";
-import { authThunks } from "features/auth/auth-reducer";
+import { authThunks } from "features/auth/auth.reducer";
 import { useActions } from "common/hooks/useActions";
 
 function App() {

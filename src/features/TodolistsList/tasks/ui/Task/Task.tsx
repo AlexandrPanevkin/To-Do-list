@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useCallback } from "react";
-import { EditableSpan } from "common/components/EditableSpan/EditableSpan";
+import { EditableSpan } from "common/components/EditableSpan/editableSpan";
 import { Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import Checkbox from "@mui/material/Checkbox";

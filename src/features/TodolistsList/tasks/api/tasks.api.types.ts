@@ -1,5 +1,5 @@
 import { TaskPriorities, TaskStatuses } from "common/enums";
-import { UpdateDomainTaskModelType } from "features/TodolistsList/tasks/model/tasks-reducer";
+import { UpdateDomainTaskModelType } from "features/TodolistsList/tasks/model/tasks.reducer";
 
 export type TaskType = {
   description: string;

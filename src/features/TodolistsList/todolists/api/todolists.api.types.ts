@@ -1,4 +1,4 @@
-import { RequestStatusType } from "app/app-reducer";
+import { RequestStatusType } from "app/app.reducer";
 
 export type TodolistType = {
   id: string;

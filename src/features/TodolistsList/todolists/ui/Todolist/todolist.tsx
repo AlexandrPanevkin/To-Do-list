@@ -1,14 +1,14 @@
 import React, { memo, useCallback, useEffect } from "react";
-import { AddItemForm } from "common/components/AddItemForm/AddItemForm";
-import { EditableSpan } from "common/components/EditableSpan/EditableSpan";
+import { AddItemForm } from "common/components/AddItemForm/addItemForm";
+import { EditableSpan } from "common/components/EditableSpan/editableSpan";
 import IconButton from "@mui/material/IconButton/IconButton";
 import { Delete } from "@mui/icons-material";
 import { Button } from "@mui/material";
-import { Task } from "features/TodolistsList/todolists/Todolist/Task/Task";
-import { RequestStatusType } from "app/app-reducer";
+import { Task } from "features/TodolistsList/tasks/ui/Task/Task";
+import { RequestStatusType } from "app/app.reducer";
 import { TaskStatuses } from "common/enums";
 import { FilterValuesType } from "features/TodolistsList/todolists/api/todolists.api.types";
-import { tasksThunks } from "features/TodolistsList/tasks/model/tasks-reducer";
+import { tasksThunks } from "features/TodolistsList/tasks/model/tasks.reducer";
 import { useAppDispatch } from "common/hooks";
 import { TaskType } from "features/TodolistsList/tasks/api/tasks.api.types";
 
