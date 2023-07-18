@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect } from "react";
+import React, { FC, memo, useCallback, useEffect } from "react";
 import { AddItemForm } from "common/components/AddItemForm/addItemForm";
 import { EditableSpan } from "common/components/EditableSpan/editableSpan";
 import IconButton from "@mui/material/IconButton/IconButton";
@@ -11,90 +11,98 @@ import { FilterValuesType } from "features/todolistsList/todolists/api/todolists
 import { tasksThunks } from "features/todolistsList/tasks/model/tasks.reducer";
 import { useAppDispatch } from "common/hooks";
 import { TaskType } from "features/todolistsList/tasks/api/tasks.api.types";
+import { useActions } from "common/hooks/useActions";
+import { todolistsActions, todolistsThunks } from "features/todolistsList/todolists/model/todolists.reducer";
 
 type PropsType = {
   todolistId: string;
   title: string;
   tasks: Array<TaskType>;
-  changeFilter: (todolistId: string, value: FilterValuesType) => void;
-  addTask: (title: string, todolistId: string) => void;
-  removeTodolist: (id: string) => void;
-  changeTodolistTitle: (id: string, newTitle: string) => void;
   filter: FilterValuesType;
   entityStatus: RequestStatusType;
 };
 
-export const Todolist = memo((props: PropsType) => {
+export const Todolist: FC<PropsType> = memo(({ todolistId, title, filter, tasks, entityStatus }) => {
+  const { addTask } = useActions(tasksThunks);
+  const { removeTodolist, changeTodolistTitle } = useActions(todolistsThunks);
+  const { changeTodolistFilter } = useActions(todolistsActions);
   const dispatch = useAppDispatch();
+
   useEffect(() => {
-    dispatch(tasksThunks.fetchTasks(props.todolistId));
+    dispatch(tasksThunks.fetchTasks(todolistId));
   }, []);
 
-  const removeTodolist = useCallback(() => {
-    props.removeTodolist(props.todolistId);
-  }, [props.removeTodolist, props.todolistId]);
-  const changeTodolistTitle = useCallback(
+  const removeTodolistCallback = useCallback(() => {
+    removeTodolist(todolistId);
+  }, [todolistId]);
+
+  const changeTodolistTitleCallback = useCallback(
     (title: string) => {
-      props.changeTodolistTitle(props.todolistId, title);
+      changeTodolistTitle({ id: todolistId, title });
     },
-    [props.changeTodolistTitle, props.todolistId]
+    [todolistId, title]
   );
 
-  const addTask = useCallback(
-    (title: string) => {
-      props.addTask(title, props.todolistId);
-    },
-    [props.addTask, props.todolistId]
-  );
+  const addTaskCallback = (title: string) => {
+    addTask({ title, todolistId });
+  };
 
   const onAllClickHandler = useCallback(
-    () => props.changeFilter(props.todolistId, "all"),
-    [props.changeFilter, props.todolistId]
+    () =>
+      changeTodolistFilter({
+        id: todolistId,
+        filter: "all",
+      }),
+    [todolistId]
   );
   const onActiveClickHandler = useCallback(
-    () => props.changeFilter(props.todolistId, "active"),
-    [props.changeFilter, props.todolistId]
+    () =>
+      changeTodolistFilter({
+        id: todolistId,
+        filter: "active",
+      }),
+    [todolistId]
   );
   const onCompletedClickHandler = useCallback(
-    () => props.changeFilter(props.todolistId, "completed"),
-    [props.changeFilter, props.todolistId]
+    () =>
+      changeTodolistFilter({
+        id: todolistId,
+        filter: "completed",
+      }),
+    [todolistId]
   );
 
-  let tasksForTodolist = props.tasks;
-  if (props.filter === "active") {
-    tasksForTodolist = props.tasks.filter((t) => t.status === TaskStatuses.New);
+  let tasksForTodolist = tasks;
+  if (filter === "active") {
+    tasksForTodolist = tasks.filter((t) => t.status === TaskStatuses.New);
   }
-  if (props.filter === "completed") {
-    tasksForTodolist = props.tasks.filter((t) => t.status === TaskStatuses.Completed);
+  if (filter === "completed") {
+    tasksForTodolist = tasks.filter((t) => t.status === TaskStatuses.Completed);
   }
 
   return (
     <div>
       <h3>
-        <EditableSpan value={props.title} onChange={changeTodolistTitle} />
-        <IconButton disabled={props.entityStatus === "loading"} onClick={removeTodolist}>
+        <EditableSpan value={title} onChange={changeTodolistTitleCallback} />
+        <IconButton disabled={entityStatus === "loading"} onClick={removeTodolistCallback}>
           <Delete />
         </IconButton>
       </h3>
-      <AddItemForm addItem={addTask} />
+      <AddItemForm addItem={addTaskCallback} />
       <div>
         {tasksForTodolist?.map((t) => {
-          return <Task key={t.id} task={t} todolistId={props.todolistId} />;
+          return <Task key={t.id} task={t} todolistId={todolistId} />;
         })}
       </div>
       <div>
-        <Button variant={props.filter === "all" ? "outlined" : "text"} onClick={onAllClickHandler} color={"inherit"}>
+        <Button variant={filter === "all" ? "outlined" : "text"} onClick={onAllClickHandler} color={"inherit"}>
           All
         </Button>
-        <Button
-          variant={props.filter === "active" ? "outlined" : "text"}
-          onClick={onActiveClickHandler}
-          color={"primary"}
-        >
+        <Button variant={filter === "active" ? "outlined" : "text"} onClick={onActiveClickHandler} color={"primary"}>
           Active
         </Button>
         <Button
-          variant={props.filter === "completed" ? "outlined" : "text"}
+          variant={filter === "completed" ? "outlined" : "text"}
           onClick={onCompletedClickHandler}
           color={"secondary"}
         >

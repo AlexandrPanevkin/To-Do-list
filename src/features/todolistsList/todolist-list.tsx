@@ -8,9 +8,6 @@ import { Navigate } from "react-router-dom";
 import { selectIsLoggedIn } from "features/auth/auth.selectors";
 import { selectTodolists } from "features/todolistsList/todolists/model/todolists.selectors";
 import { selectTasks } from "features/todolistsList/tasks/model/tasks.selectors";
-import { TaskStatuses } from "common/enums";
-import { FilterValuesType } from "features/todolistsList/todolists/api/todolists.api.types";
-import { tasksThunks } from "features/todolistsList/tasks/model/tasks.reducer";
 import { useActions } from "common/hooks/useActions";
 import { TaskType } from "features/todolistsList/tasks/api/tasks.api.types";
 
@@ -23,34 +20,11 @@ export const TodolistList = () => {
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
   const tasks = useAppSelector(selectTasks);
 
-  const {
-    fetchTodolists,
-    removeTodolist,
-    changeTodolistTitle: changeTodolistTitleThunk,
-    addTodolist,
-  } = useActions(todolistsThunks);
-  const { addTask } = useActions(tasksThunks);
-  const { changeTodolistFilter } = useActions(todolistsActions);
+  const { fetchTodolists, addTodolist } = useActions(todolistsThunks);
 
   useEffect(() => {
     if (!isLoggedIn) return;
     fetchTodolists({});
-  }, []);
-
-  const createTask = useCallback((title: string, todolistId: string) => {
-    addTask({ todolistId, title });
-  }, []);
-
-  const changeFilter = useCallback((id: string, filter: FilterValuesType) => {
-    changeTodolistFilter({ id, filter });
-  }, []);
-
-  const deleteTodolist = useCallback((id: string) => {
-    removeTodolist(id);
-  }, []);
-
-  const changeTodolistTitle = useCallback((id: string, title: string) => {
-    changeTodolistTitleThunk({ id, title });
   }, []);
 
   const createTodolist = useCallback((title: string) => {
@@ -76,11 +50,7 @@ export const TodolistList = () => {
                   entityStatus={tl.entityStatus}
                   title={tl.title}
                   tasks={tasks[tl.id]}
-                  changeFilter={changeFilter}
-                  addTask={createTask}
                   filter={tl.filter}
-                  removeTodolist={deleteTodolist}
-                  changeTodolistTitle={changeTodolistTitle}
                 />
               </Paper>
             </Grid>
