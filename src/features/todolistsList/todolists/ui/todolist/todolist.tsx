@@ -3,16 +3,14 @@ import { AddItemForm } from "common/components/AddItemForm/addItemForm";
 import { EditableSpan } from "common/components/EditableSpan/editableSpan";
 import IconButton from "@mui/material/IconButton/IconButton";
 import { Delete } from "@mui/icons-material";
-import { Button } from "@mui/material";
-import { Task } from "features/todolistsList/tasks/ui/task/task";
-import { TaskStatuses } from "common/enums";
 import { TodolistDomainType } from "features/todolistsList/todolists/api/todolists.api.types";
 import { tasksThunks } from "features/todolistsList/tasks/model/tasks.reducer";
 import { useAppDispatch } from "common/hooks";
 import { TaskType } from "features/todolistsList/tasks/api/tasks.api.types";
 import { useActions } from "common/hooks/useActions";
-import { todolistsActions, todolistsThunks } from "features/todolistsList/todolists/model/todolists.reducer";
+import { todolistsThunks } from "features/todolistsList/todolists/model/todolists.reducer";
 import { FilterTasksButtons } from "features/todolistsList/todolists/ui/todolist/filterTasksButtons/filter-tasks-buttons";
+import { Tasks } from "features/todolistsList/todolists/ui/todolist/tasks/tasks";
 
 type PropsType = {
   todolist: TodolistDomainType;
@@ -44,14 +42,6 @@ export const Todolist: FC<PropsType> = memo(({ todolist, tasks }) => {
     addTask({ title, todolistId: todolist.id });
   };
 
-  let tasksForTodolist = tasks;
-  if (todolist.filter === "active") {
-    tasksForTodolist = tasks.filter((t) => t.status === TaskStatuses.New);
-  }
-  if (todolist.filter === "completed") {
-    tasksForTodolist = tasks.filter((t) => t.status === TaskStatuses.Completed);
-  }
-
   return (
     <div>
       <h3>
@@ -62,9 +52,7 @@ export const Todolist: FC<PropsType> = memo(({ todolist, tasks }) => {
       </h3>
       <AddItemForm addItem={addTaskCallback} />
       <div>
-        {tasksForTodolist?.map((t) => {
-          return <Task key={t.id} task={t} todolistId={todolist.id} />;
-        })}
+        <Tasks todolist={todolist} tasks={tasks} />
       </div>
       <div>
         <FilterTasksButtons todolist={todolist} />
