@@ -1,16 +1,13 @@
-import React, { FC, memo, useCallback, useEffect } from "react";
+import React, { FC, memo, useEffect } from "react";
 import { AddItemForm } from "common/components/AddItemForm/addItemForm";
-import { EditableSpan } from "common/components/EditableSpan/editableSpan";
-import IconButton from "@mui/material/IconButton/IconButton";
-import { Delete } from "@mui/icons-material";
 import { TodolistDomainType } from "features/todolistsList/todolists/api/todolists.api.types";
 import { tasksThunks } from "features/todolistsList/tasks/model/tasks.reducer";
 import { useAppDispatch } from "common/hooks";
 import { TaskType } from "features/todolistsList/tasks/api/tasks.api.types";
 import { useActions } from "common/hooks/useActions";
-import { todolistsThunks } from "features/todolistsList/todolists/model/todolists.reducer";
 import { FilterTasksButtons } from "features/todolistsList/todolists/ui/todolist/filterTasksButtons/filter-tasks-buttons";
 import { Tasks } from "features/todolistsList/todolists/ui/todolist/tasks/tasks";
+import { TodolistTitle } from "features/todolistsList/todolists/ui/todolist/todolist-title/todolist-title";
 
 type PropsType = {
   todolist: TodolistDomainType;
@@ -19,24 +16,12 @@ type PropsType = {
 
 export const Todolist: FC<PropsType> = memo(({ todolist, tasks }) => {
   const { addTask } = useActions(tasksThunks);
-  const { removeTodolist, changeTodolistTitle } = useActions(todolistsThunks);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(tasksThunks.fetchTasks(todolist.id));
   }, []);
-
-  const removeTodolistCallback = useCallback(() => {
-    removeTodolist(todolist.id);
-  }, [todolist.id]);
-
-  const changeTodolistTitleCallback = useCallback(
-    (title: string) => {
-      changeTodolistTitle({ id: todolist.id, title });
-    },
-    [todolist.id, todolist.title]
-  );
 
   const addTaskCallback = (title: string) => {
     addTask({ title, todolistId: todolist.id });
@@ -45,10 +30,7 @@ export const Todolist: FC<PropsType> = memo(({ todolist, tasks }) => {
   return (
     <div>
       <h3>
-        <EditableSpan value={todolist.title} onChange={changeTodolistTitleCallback} />
-        <IconButton disabled={todolist.entityStatus === "loading"} onClick={removeTodolistCallback}>
-          <Delete />
-        </IconButton>
+        <TodolistTitle todolist={todolist} />
       </h3>
       <AddItemForm addItem={addTaskCallback} />
       <div>
