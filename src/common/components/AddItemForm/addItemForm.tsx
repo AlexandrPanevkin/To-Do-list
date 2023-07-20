@@ -1,19 +1,25 @@
-import React, { ChangeEvent, KeyboardEvent, useState } from "react";
+import React, { ChangeEvent, FC, KeyboardEvent, memo, useState } from "react";
 import { IconButton, TextField } from "@mui/material";
 import { AddBox } from "@mui/icons-material";
+import { ResponseType } from "common/types";
 
-type AddItemFormPropsType = {
-  addItem: (title: string) => void;
+type PropsType = {
+  addItem: (title: string) => Promise<any>;
 };
 
-export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
+export const AddItemForm: FC<PropsType> = memo(({ addItem }) => {
   let [title, setTitle] = useState("");
   let [error, setError] = useState<string | null>(null);
 
-  const addItem = () => {
+  const addItemCallback = () => {
     if (title.trim() !== "") {
-      props.addItem(title);
-      setTitle("");
+      addItem(title)
+        .then(() => {
+          setTitle("");
+        })
+        .catch((reason: ResponseType) => {
+          setError(reason.messages[0]);
+        });
     } else {
       setError("Title is required");
     }
@@ -27,8 +33,8 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
     if (error !== null) {
       setError(null);
     }
-    if (e.charCode === 13) {
-      addItem();
+    if (e.key === "Enter") {
+      addItemCallback();
     }
   };
 
@@ -39,11 +45,11 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
         error={!!error}
         value={title}
         onChange={onChangeHandler}
-        onKeyPress={onKeyPressHandler}
+        onKeyDown={onKeyPressHandler}
         label="Title"
         helperText={error}
       />
-      <IconButton color="primary" onClick={addItem}>
+      <IconButton color="primary" onClick={addItemCallback}>
         <AddBox />
       </IconButton>
     </div>
