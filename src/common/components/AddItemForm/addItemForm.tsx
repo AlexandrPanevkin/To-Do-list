@@ -1,7 +1,6 @@
 import React, { ChangeEvent, FC, KeyboardEvent, memo, useState } from "react";
 import { IconButton, TextField } from "@mui/material";
 import { AddBox } from "@mui/icons-material";
-import { ResponseType } from "common/types";
 import { RejectValueType } from "common/utils/create-app-async-thunk";
 
 type PropsType = {

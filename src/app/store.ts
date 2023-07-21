@@ -1,7 +1,7 @@
 import { tasksReducer } from "features/todolistsList/tasks/model/tasks.reducer";
 import { todolistsReducer } from "features/todolistsList/todolists/model/todolists.reducer";
 import { AnyAction, combineReducers } from "redux";
-import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { TypedUseSelectorHook, useSelector } from "react-redux";
 import { ThunkDispatch } from "redux-thunk";
 import { appReducer } from "app/app.reducer";
 import { authReducer } from "features/auth/auth.reducer";
