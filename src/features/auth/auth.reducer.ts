@@ -16,8 +16,7 @@ const login = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>("aut
       return { isLoggedIn: true };
     } else {
       const isShowAppError = !res.data.fieldsErrors.length;
-      handleServerAppError(res.data, dispatch, isShowAppError);
-      return rejectWithValue(res.data);
+      return rejectWithValue({ data: res.data, showGlobalError: isShowAppError });
     }
   } catch (e) {
     handleServerNetworkError(e, dispatch);
@@ -35,7 +34,6 @@ const logout = createAppAsyncThunk("auth/logout", async (_, thunkAPI) => {
       dispatch(clearTasksAndTodolists());
       return { isLoggedIn: false };
     } else {
-      handleServerAppError(res.data, dispatch);
       return rejectWithValue(null);
     }
   } catch (e) {
